@@ -13,11 +13,25 @@ export class UserDto implements User {
   emailAddress: string;
   displayName: string;
 
-  static fromDomain(user: UserEntity): User {
+  constructor(id: string, emailAddress: string, displayName: string) {
+    this.id = id;
+    this.emailAddress = emailAddress;
+    this.displayName = displayName;
+  }
+
+  static fromDomain(user: UserEntity): UserDto {
+    return new UserDto(
+      user.id.value,
+      user.emailAddress.value,
+      user.displayName
+    );
+  }
+
+  toPlainObject(): User {
     return {
-      id: user.id.value,
-      emailAddress: user.emailAddress.value,
-      displayName: user.displayName
+      id: this.id,
+      emailAddress: this.emailAddress,
+      displayName: this.displayName
     };
   }
 
