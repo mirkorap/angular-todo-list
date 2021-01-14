@@ -19,5 +19,8 @@
         "source.fixAll.eslint": true
       },
       "editor.formatOnSave": false
-    }
+    },
+    "cSpell.words": [
+      "ngrx"
+    ]
 }
