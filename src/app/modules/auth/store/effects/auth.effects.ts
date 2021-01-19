@@ -23,7 +23,7 @@ export class AuthEffects {
         this.authService.getSignedInUser().pipe(
           map((user) =>
             fromActions.registerWithEmailAndPasswordSuccess({
-              user: UserDto.fromDomain(user).toPlainObject()
+              user: UserDto.fromDomain(user).toObject()
             })
           )
         );
@@ -43,7 +43,7 @@ export class AuthEffects {
         this.authService.getSignedInUser().pipe(
           map((user) =>
             fromActions.signInWithEmailAndPasswordSuccess({
-              user: UserDto.fromDomain(user).toPlainObject()
+              user: UserDto.fromDomain(user).toObject()
             })
           )
         );
@@ -60,7 +60,7 @@ export class AuthEffects {
         this.authService.getSignedInUser().pipe(
           map((user) =>
             fromActions.signInWithGoogleSuccess({
-              user: UserDto.fromDomain(user).toPlainObject()
+              user: UserDto.fromDomain(user).toObject()
             })
           )
         );

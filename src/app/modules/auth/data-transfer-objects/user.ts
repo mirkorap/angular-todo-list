@@ -27,7 +27,11 @@ export class UserDto implements User {
     );
   }
 
-  toPlainObject(): User {
+  static fromObject(user: User): UserDto {
+    return new UserDto(user.id, user.emailAddress, user.displayName);
+  }
+
+  toObject(): User {
     return {
       id: this.id,
       emailAddress: this.emailAddress,
