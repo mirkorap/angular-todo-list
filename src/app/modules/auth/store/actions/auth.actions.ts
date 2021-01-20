@@ -1,5 +1,5 @@
-import { User } from './../../data-transfer-objects/user';
 import { createAction, props } from '@ngrx/store';
+import { User } from './../../data-transfer-objects/user';
 
 export const registerWithEmailAndPassword = createAction(
   '[Auth] Register With Email And Password',

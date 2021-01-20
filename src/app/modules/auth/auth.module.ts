@@ -1,9 +1,9 @@
-import { AuthRoutingModule } from './auth-routing.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import * as fromServices from './services';
-import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects, authFeatureKey, authReducer } from './store';
+import { AuthRoutingModule } from './auth-routing.module';
+import { CommonModule } from '@angular/common';
+import { EffectsModule } from '@ngrx/effects';
+import { NgModule } from '@angular/core';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component';
 import { StoreModule } from '@ngrx/store';

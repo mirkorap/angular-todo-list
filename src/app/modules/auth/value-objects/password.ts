@@ -1,5 +1,5 @@
-import { ValueObject } from '../../../shared/value-objects/value-object';
 import { ShortPassword } from './../errors/short-password';
+import { ValueObject } from '../../../shared/value-objects/value-object';
 
 export class Password extends ValueObject<string> {
   private static MIN_LENGTH = 6;

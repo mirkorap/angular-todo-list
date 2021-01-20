@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { EmailAddress } from '../value-objects/email-address';
-import { Password } from '../value-objects/password';
-import { AuthService } from './auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import firebase from 'firebase/app';
+import { AuthService } from './auth.service';
+import { EmailAddress } from '../value-objects/email-address';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../entities/user';
-import { map } from 'rxjs/operators';
+import { Password } from '../value-objects/password';
 import { UniqueId } from '../../../shared/value-objects/uuid';
+import { User } from '../entities/user';
+import firebase from 'firebase/app';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FirebaseAuthService implements AuthService {

@@ -1,6 +1,6 @@
-import { User } from './../../data-transfer-objects/user';
-import { createReducer, on } from '@ngrx/store';
 import * as fromActions from '../actions/auth.actions';
+import { createReducer, on } from '@ngrx/store';
+import { User } from './../../data-transfer-objects/user';
 
 export interface AuthState {
   user: User;

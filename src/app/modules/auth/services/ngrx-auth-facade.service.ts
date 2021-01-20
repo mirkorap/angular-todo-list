@@ -1,11 +1,11 @@
-import { UserDto } from './../data-transfer-objects/user';
-import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import * as fromStore from '../store';
+import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { User } from '../entities/user';
-import { AuthStoreFacadeService } from './auth-store-facade.service';
-import * as fromStore from '../store';
+import { UserDto } from './../data-transfer-objects/user';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NgrxAuthFacadeService implements AuthStoreFacadeService {

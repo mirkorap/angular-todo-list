@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs';
-import { Password } from './../value-objects/password';
 import { EmailAddress } from './../value-objects/email-address';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Password } from './../value-objects/password';
 import { User } from '../entities/user';
 
 @Injectable()

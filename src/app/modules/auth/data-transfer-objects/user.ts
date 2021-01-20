@@ -1,6 +1,6 @@
+import { EmailAddress } from '../value-objects/email-address';
 import { UniqueId } from '../../../shared/value-objects/uuid';
 import { User as UserEntity } from '../entities/user';
-import { EmailAddress } from '../value-objects/email-address';
 
 export interface User {
   id: string;
