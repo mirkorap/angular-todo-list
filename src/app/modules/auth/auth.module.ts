@@ -22,7 +22,7 @@ import { StoreModule } from '@ngrx/store';
       useClass: fromServices.FirebaseAuthService
     },
     {
-      provide: fromServices.AuthFacadeService,
+      provide: fromServices.AuthStoreFacadeService,
       useClass: fromServices.NgrxAuthFacadeService
     }
   ]
