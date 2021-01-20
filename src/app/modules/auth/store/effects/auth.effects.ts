@@ -5,7 +5,7 @@ import { EmailAddress } from './../../value-objects/email-address';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import * as fromActions from '../actions';
+import * as fromActions from '../actions/auth.actions';
 
 @Injectable()
 export class AuthEffects {
