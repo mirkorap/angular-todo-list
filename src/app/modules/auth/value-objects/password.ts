@@ -2,6 +2,8 @@ import { ShortPassword } from './../errors/short-password';
 import { ValueObject } from '../../../shared/value-objects/value-object';
 
 export class Password extends ValueObject<string> {
+  protected _value: string;
+
   private static MIN_LENGTH = 6;
 
   constructor(password: string) {

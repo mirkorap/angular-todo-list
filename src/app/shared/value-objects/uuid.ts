@@ -3,6 +3,8 @@ import { ValueObject } from './value-object';
 import { v4 as uuid4 } from 'uuid';
 
 export class UniqueId extends ValueObject<string> {
+  protected _value: string;
+
   constructor(uniqueId: string) {
     super();
 
