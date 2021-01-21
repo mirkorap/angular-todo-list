@@ -4,9 +4,9 @@ import { User } from '../entities/user';
 
 @Injectable()
 export abstract class AuthStoreFacadeService {
-  user$: Observable<User>;
-  isSubmitting$: Observable<boolean>;
-  isLoggedIn$: Observable<boolean>;
+  abstract user$: Observable<User>;
+  abstract isSubmitting$: Observable<boolean>;
+  abstract isLoggedIn$: Observable<boolean>;
 
   abstract registerWithEmailAndPassword(
     emailAddress: string,
