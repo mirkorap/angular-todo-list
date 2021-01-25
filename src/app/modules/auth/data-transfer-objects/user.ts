@@ -1,14 +1,14 @@
 import { EmailAddress } from '../value-objects/email-address';
 import { UniqueId } from '../../../shared/value-objects/uuid';
-import { User as UserEntity } from '../entities/user';
+import { User } from '../entities/user';
 
-export interface User {
+export interface IUserDto {
   id: string;
   emailAddress: string;
   displayName: string;
 }
 
-export class UserDto implements User {
+export class UserDto implements IUserDto {
   id: string;
   emailAddress: string;
   displayName: string;
@@ -19,7 +19,7 @@ export class UserDto implements User {
     this.displayName = displayName;
   }
 
-  static fromDomain(user: UserEntity): UserDto {
+  static fromDomain(user: User): UserDto {
     return new UserDto(
       user.id.value,
       user.emailAddress.value,
@@ -27,11 +27,11 @@ export class UserDto implements User {
     );
   }
 
-  static fromObject(user: User): UserDto {
+  static fromObject(user: IUserDto): UserDto {
     return new UserDto(user.id, user.emailAddress, user.displayName);
   }
 
-  toObject(): User {
+  toObject(): IUserDto {
     return {
       id: this.id,
       emailAddress: this.emailAddress,
@@ -39,8 +39,8 @@ export class UserDto implements User {
     };
   }
 
-  toDomain(): UserEntity {
-    return new UserEntity(
+  toDomain(): User {
+    return new User(
       new UniqueId(this.id),
       new EmailAddress(this.emailAddress),
       this.displayName

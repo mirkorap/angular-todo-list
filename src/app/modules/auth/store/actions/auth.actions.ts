@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from './../../data-transfer-objects/user';
+import { IUserDto } from './../../data-transfer-objects/user';
 
 export const registerWithEmailAndPassword = createAction(
   '[Auth] Register With Email And Password',
@@ -8,7 +8,7 @@ export const registerWithEmailAndPassword = createAction(
 
 export const registerWithEmailAndPasswordSuccess = createAction(
   '[Auth] Register With Email And Password Success',
-  props<{ user: User }>()
+  props<{ user: IUserDto }>()
 );
 
 export const signInWithEmailAndPassword = createAction(
@@ -18,12 +18,12 @@ export const signInWithEmailAndPassword = createAction(
 
 export const signInWithEmailAndPasswordSuccess = createAction(
   '[Auth] Sign In With Email And Password Success',
-  props<{ user: User }>()
+  props<{ user: IUserDto }>()
 );
 
 export const signInWithGoogle = createAction('[Auth] Sign In With Google');
 
 export const signInWithGoogleSuccess = createAction(
   '[Auth] Sign In With Google Success',
-  props<{ user: User }>()
+  props<{ user: IUserDto }>()
 );

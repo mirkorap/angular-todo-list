@@ -1,9 +1,9 @@
 import * as fromActions from '../actions/auth.actions';
 import { createReducer, on } from '@ngrx/store';
-import { User } from './../../data-transfer-objects/user';
+import { IUserDto } from './../../data-transfer-objects/user';
 
 export interface AuthState {
-  user: User;
+  user: IUserDto;
   isSubmitting: boolean;
 }
 
