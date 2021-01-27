@@ -1,3 +1,4 @@
+import { AuthFailure } from './../failures/auth-failure';
 import { EmailAddress } from './../value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -9,16 +10,16 @@ export abstract class AuthService {
   abstract registerWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<void>;
+  ): Promise<AuthFailure | void>;
 
   abstract signInWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<void>;
+  ): Promise<AuthFailure | void>;
 
-  abstract signInWithGoogle(): Promise<void>;
+  abstract signInWithGoogle(): Promise<AuthFailure | void>;
 
   abstract signOut(): Promise<void>;
 
-  abstract getSignedInUser(): Observable<User>;
+  abstract getSignedInUser(): Observable<AuthFailure | User>;
 }
