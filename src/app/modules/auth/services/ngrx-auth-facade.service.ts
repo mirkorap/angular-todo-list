@@ -1,23 +1,36 @@
 import * as fromStore from '../store';
+import { AuthFailure } from '../failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { User } from '../entities/user';
-import { UserDto } from './../data-transfer-objects/user';
+import { UserDto } from '../data-transfer-objects/user';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NgrxAuthFacadeService implements AuthStoreFacadeService {
-  user$: Observable<User> = this.store
+  user$: Observable<User | Record<string, never>> = this.store
     .select(fromStore.selectUser)
-    .pipe(map((user) => UserDto.fromObject(user).toDomain()));
+    .pipe(
+      map((user) =>
+        UserDto.isValid(user) ? UserDto.fromObject(user).toDomain() : {}
+      )
+    );
+
+  failure$: Observable<AuthFailure | null> = this.store.select(
+    fromStore.selectFailure
+  );
 
   isSubmitting$: Observable<boolean> = this.store.select(
     fromStore.isSubmitting
   );
 
-  isLoggedIn$: Observable<boolean> = this.store.select(fromStore.isLoggedIn);
+  isSignedIn$: Observable<boolean> = this.store.select(fromStore.isSignedIn);
+
+  showErrorMessage$: Observable<boolean> = this.store.select(
+    fromStore.showErrorMessage
+  );
 
   constructor(private store: Store<fromStore.AuthState>) {}
 

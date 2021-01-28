@@ -31,6 +31,10 @@ export class UserDto implements IUserDto {
     return new UserDto(user.id, user.emailAddress, user.displayName);
   }
 
+  static isValid(user: IUserDto | unknown): user is IUserDto {
+    return (user as IUserDto).id !== undefined;
+  }
+
   toObject(): IUserDto {
     return {
       id: this.id,
