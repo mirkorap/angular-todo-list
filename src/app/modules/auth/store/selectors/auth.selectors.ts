@@ -10,9 +10,19 @@ export const selectUser = createSelector(
   (state) => state.user
 );
 
+export const selectFailure = createSelector(
+  selectAuthState,
+  (state) => state.failure
+);
+
 export const isSubmitting = createSelector(
   selectAuthState,
   (state) => state.isSubmitting
 );
 
-export const isLoggedIn = createSelector(selectUser, (user) => !!user);
+export const isSignedIn = createSelector(selectUser, (user) => !!user.id);
+
+export const showErrorMessage = createSelector(
+  selectFailure,
+  (failure) => !!failure
+);

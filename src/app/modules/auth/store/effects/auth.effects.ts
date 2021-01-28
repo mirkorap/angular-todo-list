@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { EmailAddress } from './../../value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Password } from './../../value-objects/password';
+import { User } from './../../entities/user';
 import { UserDto } from './../../data-transfer-objects/user';
 
 @Injectable()
@@ -20,12 +21,9 @@ export class AuthEffects {
           new Password(action.password)
         );
 
-        this.authService.getSignedInUser().pipe(
-          map((user) =>
-            fromActions.registerWithEmailAndPasswordSuccess({
-              user: UserDto.fromDomain(user).toObject()
-            })
-          )
+        this.dispatchFailureOrSuccess(
+          fromActions.registerWithEmailAndPasswordFail,
+          fromActions.registerWithEmailAndPasswordSuccess
         );
       })
     )
@@ -40,12 +38,9 @@ export class AuthEffects {
           new Password(action.password)
         );
 
-        this.authService.getSignedInUser().pipe(
-          map((user) =>
-            fromActions.signInWithEmailAndPasswordSuccess({
-              user: UserDto.fromDomain(user).toObject()
-            })
-          )
+        this.dispatchFailureOrSuccess(
+          fromActions.signInWithEmailAndPasswordFail,
+          fromActions.signInWithEmailAndPasswordSuccess
         );
       })
     )
@@ -57,14 +52,28 @@ export class AuthEffects {
       tap(async () => {
         await this.authService.signInWithGoogle();
 
-        this.authService.getSignedInUser().pipe(
-          map((user) =>
-            fromActions.signInWithGoogleSuccess({
-              user: UserDto.fromDomain(user).toObject()
-            })
-          )
+        this.dispatchFailureOrSuccess(
+          fromActions.signInWithGoogleFail,
+          fromActions.signInWithGoogleSuccess
         );
       })
     )
   );
+
+  private dispatchFailureOrSuccess(
+    failureAction: fromActions.failureActionType,
+    successAction: fromActions.successActionType
+  ) {
+    return this.authService.getSignedInUser().pipe(
+      map((failureOrUser) => {
+        if (failureOrUser instanceof User) {
+          return successAction({
+            user: UserDto.fromDomain(failureOrUser).toObject()
+          });
+        }
+
+        return failureAction({ failure: failureOrUser });
+      })
+    );
+  }
 }
