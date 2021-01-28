@@ -48,5 +48,12 @@ export const authReducer = createReducer(
       failure: action.failure,
       isSubmitting: false
     })
-  )
+  ),
+  on(fromActions.signOut, (state) => ({
+    ...state,
+    isSubmitting: true
+  })),
+  on(fromActions.signOutSuccess, () => ({
+    ...initialState
+  }))
 );

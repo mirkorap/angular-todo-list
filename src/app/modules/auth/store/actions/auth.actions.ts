@@ -48,6 +48,11 @@ export const signInWithGoogleFail = createAction(
   props<{ failure: AuthFailure }>()
 );
 
+// SignOut actions
+export const signOut = createAction('[Auth] Sign Out');
+
+export const signOutSuccess = createAction('[Auth] Sign Out Success');
+
 export type failureActionType = (props: {
   failure: AuthFailure;
 }) => TypedAction<string>;

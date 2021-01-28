@@ -49,4 +49,8 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
   signInWithGoogle(): void {
     this.store.dispatch(fromStore.signInWithGoogle());
   }
+
+  signOut(): void {
+    this.store.dispatch(fromStore.signOut());
+  }
 }

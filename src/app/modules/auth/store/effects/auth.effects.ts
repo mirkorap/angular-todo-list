@@ -1,6 +1,6 @@
 import * as fromActions from '../actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { EmailAddress } from './../../value-objects/email-address';
 import { Injectable } from '@angular/core';
@@ -60,11 +60,22 @@ export class AuthEffects {
     )
   );
 
+  signOut$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.signOut),
+      switchMap(async () => {
+        await this.authService.signOut();
+
+        return fromActions.signOutSuccess();
+      })
+    )
+  );
+
   private dispatchFailureOrSuccess(
     failureAction: fromActions.failureActionType,
     successAction: fromActions.successActionType
-  ) {
-    return this.authService.getSignedInUser().pipe(
+  ): void {
+    this.authService.getSignedInUser().pipe(
       map((failureOrUser) => {
         if (failureOrUser instanceof User) {
           return successAction({
