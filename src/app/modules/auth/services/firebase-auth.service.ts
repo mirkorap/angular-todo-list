@@ -1,5 +1,5 @@
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthFailure } from './../failures/auth-failure';
+import { AuthFailure } from '../failures/auth-failure';
 import { AuthService } from './auth.service';
 import { EmailAddress } from '../value-objects/email-address';
 import { Injectable } from '@angular/core';

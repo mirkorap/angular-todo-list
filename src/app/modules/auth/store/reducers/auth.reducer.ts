@@ -1,7 +1,7 @@
 import * as fromActions from '../actions/auth.actions';
 import { createReducer, on } from '@ngrx/store';
-import { AuthFailure } from './../../failures/auth-failure';
-import { IUserDto } from './../../data-transfer-objects/user';
+import { AuthFailure } from '../../failures/auth-failure';
+import { IUserDto } from '../../data-transfer-objects/user';
 
 export interface AuthState {
   user: IUserDto | Record<string, never>;

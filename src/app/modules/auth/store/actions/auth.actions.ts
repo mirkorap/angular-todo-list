@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthFailure } from './../../failures/auth-failure';
-import { IUserDto } from './../../data-transfer-objects/user';
+import { AuthFailure } from '../../failures/auth-failure';
+import { IUserDto } from '../../data-transfer-objects/user';
 import { TypedAction } from '@ngrx/store/src/models';
 
 // RegisterWithEmailAndPassword actions
