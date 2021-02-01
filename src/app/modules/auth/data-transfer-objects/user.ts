@@ -1,6 +1,6 @@
-import { EmailAddress } from '../value-objects/email-address';
-import { UniqueId } from '../../../shared/value-objects/uuid';
-import { User } from '../entities/user';
+import { EmailAddress } from '@auth/value-objects/email-address';
+import { UniqueId } from '@shared/value-objects/uuid';
+import { User } from '@auth/entities/user';
 
 export interface IUserDto {
   id: string;

@@ -1,12 +1,12 @@
-import * as fromActions from '../actions/auth.actions';
+import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../../services/auth.service';
-import { EmailAddress } from '../../value-objects/email-address';
+import { AuthService } from '@auth/services/auth.service';
+import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
-import { Password } from '../../value-objects/password';
-import { User } from '../../entities/user';
-import { UserDto } from '../../data-transfer-objects/user';
+import { Password } from '@auth/value-objects/password';
+import { User } from '@auth/entities/user';
+import { UserDto } from '@auth/data-transfer-objects/user';
 
 @Injectable()
 export class AuthEffects {

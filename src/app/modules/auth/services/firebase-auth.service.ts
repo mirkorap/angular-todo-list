@@ -1,12 +1,12 @@
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthFailure } from '../failures/auth-failure';
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from './auth.service';
-import { EmailAddress } from '../value-objects/email-address';
+import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Password } from '../value-objects/password';
-import { UniqueId } from '../../../shared/value-objects/uuid';
-import { User } from '../entities/user';
+import { Password } from '@auth/value-objects/password';
+import { UniqueId } from '@shared/value-objects/uuid';
+import { User } from '@auth/entities/user';
 import firebase from 'firebase/app';
 import { map } from 'rxjs/operators';
 

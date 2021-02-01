@@ -1,5 +1,5 @@
-import { ShortPassword } from '../errors/short-password';
-import { ValueObject } from '../../../shared/value-objects/value-object';
+import { ShortPassword } from '@auth/errors/short-password';
+import { ValueObject } from '@shared/value-objects/value-object';
 
 export class Password extends ValueObject<string> {
   protected _value: string;

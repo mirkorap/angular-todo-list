@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component';
 import { StoreModule } from '@ngrx/store';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 @NgModule({
   declarations: [SignInPageComponent, SignInFormComponent],

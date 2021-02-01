@@ -1,11 +1,11 @@
-import * as fromStore from '../store';
-import { AuthFailure } from '../failures/auth-failure';
+import * as fromStore from '@auth/store';
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { User } from '../entities/user';
-import { UserDto } from '../data-transfer-objects/user';
+import { User } from '@auth/entities/user';
+import { UserDto } from '@auth/data-transfer-objects/user';
 import { map } from 'rxjs/operators';
 
 @Injectable()

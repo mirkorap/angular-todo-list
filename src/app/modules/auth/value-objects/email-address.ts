@@ -1,5 +1,5 @@
-import { InvalidEmailAddress } from '../errors/invalid-email-address';
-import { ValueObject } from '../../../shared/value-objects/value-object';
+import { InvalidEmailAddress } from '@auth/errors/invalid-email-address';
+import { ValueObject } from '@shared/value-objects/value-object';
 
 export class EmailAddress extends ValueObject<string> {
   protected _value: string;

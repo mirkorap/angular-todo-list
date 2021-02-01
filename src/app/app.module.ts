@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
-import { environment } from '../environments/environment';
+import { environment } from '@environments/environment';
 
 @NgModule({
   declarations: [AppComponent],

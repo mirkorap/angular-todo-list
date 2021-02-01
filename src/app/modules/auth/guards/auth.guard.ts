@@ -1,5 +1,5 @@
 import { CanActivate, Router } from '@angular/router';
-import { AuthStoreFacadeService } from '../services/auth-store-facade.service';
+import { AuthStoreFacadeService } from '@auth/services/auth-store-facade.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

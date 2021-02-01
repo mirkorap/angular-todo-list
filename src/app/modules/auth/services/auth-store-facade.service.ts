@@ -1,7 +1,7 @@
-import { AuthFailure } from '../failures/auth-failure';
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../entities/user';
+import { User } from '@auth/entities/user';
 
 @Injectable()
 export abstract class AuthStoreFacadeService {

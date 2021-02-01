@@ -1,7 +1,7 @@
-import * as fromActions from '../actions/auth.actions';
+import * as fromActions from '@auth/store/actions/auth.actions';
 import { createReducer, on } from '@ngrx/store';
-import { AuthFailure } from '../../failures/auth-failure';
-import { IUserDto } from '../../data-transfer-objects/user';
+import { AuthFailure } from '@auth/failures/auth-failure';
+import { IUserDto } from '@auth/data-transfer-objects/user';
 
 export interface AuthState {
   user: IUserDto | Record<string, never>;
@@ -23,9 +23,9 @@ export const authReducer = createReducer(
     fromActions.registerWithEmailAndPassword,
     fromActions.signInWithEmailAndPassword,
     fromActions.signInWithGoogle,
-    () => ({
-      user: {},
-      failure: null,
+    fromActions.signOut,
+    (state) => ({
+      ...state,
       isSubmitting: true
     })
   ),
@@ -49,10 +49,6 @@ export const authReducer = createReducer(
       isSubmitting: false
     })
   ),
-  on(fromActions.signOut, (state) => ({
-    ...state,
-    isSubmitting: true
-  })),
   on(fromActions.signOutSuccess, () => ({
     ...initialState
   }))

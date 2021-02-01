@@ -1,5 +1,5 @@
-import { EmailAddress } from '../value-objects/email-address';
-import { UniqueId } from '../../../shared/value-objects/uuid';
+import { EmailAddress } from '@auth/value-objects/email-address';
+import { UniqueId } from '@shared/value-objects/uuid';
 
 export class User {
   id: UniqueId;

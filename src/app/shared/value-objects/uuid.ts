@@ -1,4 +1,4 @@
-import { EmptyString } from '../errors/empty-string';
+import { EmptyString } from '@shared/errors/empty-string';
 import { ValueObject } from './value-object';
 import { v4 as uuid4 } from 'uuid';
 
