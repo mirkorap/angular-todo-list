@@ -21,7 +21,7 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@modules/*": ["src/app/modules/*"],
+      "@auth/*": ["src/app/modules/auth/*"],
       "@shared/*": ["src/app/shared/*"],
       "@environments/*": ["src/environments/*"]
     }
