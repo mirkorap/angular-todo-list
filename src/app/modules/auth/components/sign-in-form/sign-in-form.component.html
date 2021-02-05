@@ -1,1 +1,35 @@
-<p>sign-in-form works!</p>
+<mat-card fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
+  <mat-card-header>
+    <mat-card-title>Angular Todo List</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content fxFill>
+    <mat-form-field appearance="outline" fxFill>
+      <mat-label>Email address</mat-label>
+      <input type="text" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFill>
+      <mat-label>Password</mat-label>
+      <input type="password" matInput />
+    </mat-form-field>
+  </mat-card-content>
+
+  <mat-card-actions fxFill>
+    <div fxLayout="row" fxLayoutGap="1rem">
+      <button type="button" color="primary" mat-raised-button fxFlex>
+        {{ 'Sign in' | uppercase }}
+      </button>
+
+      <button type="button" color="warn" mat-raised-button fxFlex>
+        {{ 'Register' | uppercase }}
+      </button>
+    </div>
+
+    <div class="my-3" fxLayout="row">
+      <button type="button" mat-raised-button fxFlex>
+        {{ 'Sign in with Google' | uppercase }}
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>
