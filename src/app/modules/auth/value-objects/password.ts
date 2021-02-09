@@ -1,5 +1,6 @@
 import { ShortPassword } from '@auth/errors/short-password';
 import { ValueObject } from '@shared/value-objects/value-object';
+import { validatePassword } from '@shared/validators/value-validators';
 
 export class Password extends ValueObject<string> {
   protected _value: string;
@@ -9,14 +10,10 @@ export class Password extends ValueObject<string> {
   constructor(password: string) {
     super();
 
-    if (!this.validate(password)) {
+    if (!validatePassword(password)) {
       throw new ShortPassword(Password.MIN_LENGTH);
     }
 
     this._value = password;
-  }
-
-  protected validate(value: string): boolean {
-    return value.length >= Password.MIN_LENGTH;
   }
 }

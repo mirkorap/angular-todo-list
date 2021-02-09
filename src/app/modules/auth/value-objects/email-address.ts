@@ -1,5 +1,6 @@
 import { InvalidEmailAddress } from '@auth/errors/invalid-email-address';
 import { ValueObject } from '@shared/value-objects/value-object';
+import { validateEmailAddress } from '@shared/validators/value-validators';
 
 export class EmailAddress extends ValueObject<string> {
   protected _value: string;
@@ -7,15 +8,10 @@ export class EmailAddress extends ValueObject<string> {
   constructor(emailAddress: string) {
     super();
 
-    if (!this.validate(emailAddress)) {
+    if (!validateEmailAddress(emailAddress)) {
       throw new InvalidEmailAddress();
     }
 
     this._value = emailAddress;
-  }
-
-  protected validate(value: string): boolean {
-    const emailRegex = /^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
-    return emailRegex.test(value);
   }
 }

@@ -4,6 +4,4 @@ export abstract class ValueObject<T> {
   get value(): T {
     return this._value;
   }
-
-  protected abstract validate(value: T): boolean;
 }
