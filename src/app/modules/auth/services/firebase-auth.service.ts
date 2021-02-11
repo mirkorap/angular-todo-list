@@ -3,12 +3,10 @@ import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from './auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Password } from '@auth/value-objects/password';
-import { UniqueId } from '@shared/value-objects/uuid';
 import { User } from '@auth/entities/user';
+import { UserDto } from '@auth/data-transfer-objects/user';
 import firebase from 'firebase/app';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FirebaseAuthService implements AuthService {
@@ -17,12 +15,18 @@ export class FirebaseAuthService implements AuthService {
   async registerWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | void> {
+  ): Promise<AuthFailure | User> {
     try {
-      await this.auth.createUserWithEmailAndPassword(
+      const firebaseUser = await this.auth.createUserWithEmailAndPassword(
         emailAddress.value,
         password.value
       );
+
+      if (!firebaseUser.user) {
+        return AuthFailure.SERVER_ERROR;
+      }
+
+      return UserDto.fromFirebase(firebaseUser.user).toDomain();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         return AuthFailure.EMAIL_ALREADY_IN_USE;
@@ -35,17 +39,20 @@ export class FirebaseAuthService implements AuthService {
   async signInWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | void> {
+  ): Promise<AuthFailure | User> {
     try {
-      await this.auth.signInWithEmailAndPassword(
+      const firebaseUser = await this.auth.signInWithEmailAndPassword(
         emailAddress.value,
         password.value
       );
+
+      if (!firebaseUser.user) {
+        return AuthFailure.SERVER_ERROR;
+      }
+
+      return UserDto.fromFirebase(firebaseUser.user).toDomain();
     } catch (error) {
-      if (
-        error.code === 'auth/user-not-found' ||
-        error.code === 'auth/wrong-password'
-      ) {
+      if (['auth/user-not-found', 'auth/wrong-password'].includes(error.code)) {
         return AuthFailure.INVALID_EMAIL_AND_PASSWORD;
       }
 
@@ -53,37 +60,23 @@ export class FirebaseAuthService implements AuthService {
     }
   }
 
-  async signInWithGoogle(): Promise<AuthFailure | void> {
+  async signInWithGoogle(): Promise<AuthFailure | User> {
     try {
       const googleUser = await this.auth.signInWithPopup(
         new firebase.auth.GoogleAuthProvider()
       );
 
       if (!googleUser.user) {
-        return AuthFailure.CANCELLED_BY_USER;
+        return AuthFailure.SERVER_ERROR;
       }
-    } catch (e) {
-      return AuthFailure.SERVER_ERROR;
+
+      return UserDto.fromFirebase(googleUser.user).toDomain();
+    } catch (error) {
+      return AuthFailure.CANCELLED_BY_USER;
     }
   }
 
   async signOut(): Promise<void> {
     await this.auth.signOut();
-  }
-
-  getSignedInUser(): Observable<AuthFailure | User> {
-    return this.auth.user.pipe(
-      map((firebaseUser) => {
-        if (firebaseUser) {
-          return new User(
-            new UniqueId(firebaseUser.uid),
-            new EmailAddress(`${firebaseUser.email}`),
-            `${firebaseUser.displayName}`
-          );
-        }
-
-        return AuthFailure.USER_NOT_SIGNED_IN;
-      })
-    );
   }
 }

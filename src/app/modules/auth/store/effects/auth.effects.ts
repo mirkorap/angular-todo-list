@@ -1,12 +1,14 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from '@auth/services/auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Password } from '@auth/value-objects/password';
+import { TypedAction } from '@ngrx/store/src/models';
 import { User } from '@auth/entities/user';
 import { UserDto } from '@auth/data-transfer-objects/user';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
@@ -15,13 +17,14 @@ export class AuthEffects {
   registerWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.registerWithEmailAndPassword),
-      tap(async (action) => {
-        await this.authService.registerWithEmailAndPassword(
+      switchMap(async (action) => {
+        const failureOrUser = await this.authService.registerWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
-        this.dispatchFailureOrSuccess(
+        return this.dispatchFailureOrSuccess(
+          failureOrUser,
           fromActions.registerWithEmailAndPasswordFail,
           fromActions.registerWithEmailAndPasswordSuccess
         );
@@ -32,13 +35,14 @@ export class AuthEffects {
   signInWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.signInWithEmailAndPassword),
-      tap(async (action) => {
-        await this.authService.signInWithEmailAndPassword(
+      switchMap(async (action) => {
+        const failureOrUser = await this.authService.signInWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
-        this.dispatchFailureOrSuccess(
+        return this.dispatchFailureOrSuccess(
+          failureOrUser,
           fromActions.signInWithEmailAndPasswordFail,
           fromActions.signInWithEmailAndPasswordSuccess
         );
@@ -49,10 +53,11 @@ export class AuthEffects {
   signInWithGoogle$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.signInWithGoogle),
-      tap(async () => {
-        await this.authService.signInWithGoogle();
+      switchMap(async () => {
+        const failureOrUser = await this.authService.signInWithGoogle();
 
-        this.dispatchFailureOrSuccess(
+        return this.dispatchFailureOrSuccess(
+          failureOrUser,
           fromActions.signInWithGoogleFail,
           fromActions.signInWithGoogleSuccess
         );
@@ -72,19 +77,16 @@ export class AuthEffects {
   );
 
   private dispatchFailureOrSuccess(
+    failureOrUser: AuthFailure | User,
     failureAction: fromActions.failureActionType,
     successAction: fromActions.successActionType
-  ): void {
-    this.authService.getSignedInUser().pipe(
-      map((failureOrUser) => {
-        if (failureOrUser instanceof User) {
-          return successAction({
-            user: UserDto.fromDomain(failureOrUser).toObject()
-          });
-        }
+  ): TypedAction<string> {
+    if (failureOrUser instanceof User) {
+      return successAction({
+        user: UserDto.fromDomain(failureOrUser).toObject()
+      });
+    }
 
-        return failureAction({ failure: failureOrUser });
-      })
-    );
+    return failureAction({ failure: failureOrUser });
   }
 }

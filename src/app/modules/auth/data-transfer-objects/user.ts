@@ -1,6 +1,7 @@
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { UniqueId } from '@shared/value-objects/uuid';
 import { User } from '@auth/entities/user';
+import firebase from 'firebase/app';
 
 export interface IUserDto {
   id: string;
@@ -29,6 +30,10 @@ export class UserDto implements IUserDto {
 
   static fromObject(user: IUserDto): UserDto {
     return new UserDto(user.id, user.emailAddress, user.displayName);
+  }
+
+  static fromFirebase(user: firebase.User): UserDto {
+    return new UserDto(user.uid, `${user.email}`, `${user.displayName}`);
   }
 
   static isValid(user: IUserDto | unknown): user is IUserDto {
