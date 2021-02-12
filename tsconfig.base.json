@@ -22,6 +22,7 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@auth/*": ["src/app/modules/auth/*"],
+      "@note/*": ["src/app/modules/note/*"],
       "@shared/*": ["src/app/shared/*"],
       "@environments/*": ["src/environments/*"]
     }
