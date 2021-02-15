@@ -4,30 +4,51 @@
   </mat-card-header>
 
   <mat-card-content fxFill>
-    <mat-form-field appearance="outline" fxFill>
-      <mat-label>Email address</mat-label>
-      <input type="text" matInput />
-    </mat-form-field>
+    <form [formGroup]="authForm">
+      <mat-form-field appearance="outline" fxFill>
+        <mat-label>Email address</mat-label>
+        <input type="text" formControlName="emailAddress" matInput />
+        <mat-error>Invalid email address</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" fxFill>
-      <mat-label>Password</mat-label>
-      <input type="password" matInput />
-    </mat-form-field>
+      <mat-form-field appearance="outline" fxFill>
+        <mat-label>Password</mat-label>
+        <input type="password" formControlName="password" matInput />
+        <mat-error>Password too short</mat-error>
+      </mat-form-field>
+    </form>
   </mat-card-content>
 
   <mat-card-actions fxFill>
     <div fxLayout="row" fxLayoutGap="1rem">
-      <button type="button" color="primary" mat-raised-button fxFlex>
+      <button
+        type="button"
+        color="primary"
+        mat-raised-button
+        fxFlex
+        (click)="onSignInClick()"
+      >
         {{ 'Sign in' | uppercase }}
       </button>
 
-      <button type="button" color="warn" mat-raised-button fxFlex>
+      <button
+        type="button"
+        color="warn"
+        mat-raised-button
+        fxFlex
+        (click)="onRegisterClick()"
+      >
         {{ 'Register' | uppercase }}
       </button>
     </div>
 
     <div class="my-3" fxLayout="row">
-      <button type="button" mat-raised-button fxFlex>
+      <button
+        type="button"
+        mat-raised-button
+        fxFlex
+        (click)="onSignInWithGoogleClick()"
+      >
         {{ 'Sign in with Google' | uppercase }}
       </button>
     </div>

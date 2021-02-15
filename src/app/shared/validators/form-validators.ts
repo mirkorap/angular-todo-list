@@ -7,7 +7,7 @@ export function emailAddressValidator(): ValidatorFn {
       return null;
     }
 
-    return { emailAddress: { value: control.value } };
+    return { emailAddress: 'Invalid email address' };
   };
 }
 
@@ -17,6 +17,6 @@ export function passwordValidator(): ValidatorFn {
       return null;
     }
 
-    return { password: { value: control.value } };
+    return { password: 'Password too short' };
   };
 }
