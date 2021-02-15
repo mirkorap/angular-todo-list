@@ -33,7 +33,7 @@ export class UserDto implements IUserDto {
   }
 
   static fromFirebase(user: firebase.User): UserDto {
-    return new UserDto(user.uid, `${user.email}`, `${user.displayName}`);
+    return new UserDto(user.uid, user.email ?? '', user.displayName ?? '');
   }
 
   static isValid(user: IUserDto | unknown): user is IUserDto {
