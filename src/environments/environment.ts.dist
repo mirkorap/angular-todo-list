@@ -1,0 +1,9 @@
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: '<api-key>',
+    authDomain: '<auth-domain>',
+    projectId: '<project-id>',
+    appId: '<app-id>'
+  }
+};

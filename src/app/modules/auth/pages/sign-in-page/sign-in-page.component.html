@@ -1,0 +1,11 @@
+<div
+  class="container container--full"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+>
+  <app-sign-in-form
+    (signIn)="onSignIn($event)"
+    (register)="onRegister($event)"
+    (signInWithGoogle)="onSignInWithGoogle()"
+  ></app-sign-in-form>
+</div>
