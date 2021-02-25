@@ -1,11 +1,11 @@
 import * as fromServices from './services';
 import { AuthEffects, authFeatureKey, authReducer } from './store';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthRoutingModule } from './auth-routing.module';
 import { EffectsModule } from '@ngrx/effects';
-import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component';
 import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component';
@@ -23,7 +23,6 @@ import { environment } from '@environments/environment';
     AngularFireAuthModule
   ],
   providers: [
-    AuthGuard,
     {
       provide: fromServices.AuthService,
       useClass: fromServices.FirebaseAuthService
@@ -34,4 +33,11 @@ import { environment } from '@environments/environment';
     }
   ]
 })
-export class AuthModule {}
+export class AuthModule {
+  static forRoot(): ModuleWithProviders<AuthModule> {
+    return {
+      ngModule: AuthModule,
+      providers: [AuthGuard]
+    };
+  }
+}

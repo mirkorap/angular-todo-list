@@ -1,5 +1,6 @@
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from '@auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
@@ -14,6 +15,7 @@ import { environment } from '@environments/environment';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AuthModule.forRoot(),
     EffectsModule.forRoot([]),
     StoreModule.forRoot({}),
     !environment.production ? StoreDevtoolsModule.instrument() : []
