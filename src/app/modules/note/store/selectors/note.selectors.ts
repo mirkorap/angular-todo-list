@@ -5,10 +5,9 @@ export const selectNoteState = createFeatureSelector<fromReducer.NoteState>(
   fromReducer.noteFeatureKey
 );
 
-export const selectNotes = createSelector(
-  selectNoteState,
-  (state) => state.notes
-);
+const { selectAll } = fromReducer.adapter.getSelectors();
+
+export const selectNotes = createSelector(selectNoteState, selectAll);
 
 export const selectFailure = createSelector(
   selectNoteState,
