@@ -1,5 +1,4 @@
 import * as fromStore from '@auth/store';
-import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -18,8 +17,8 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
       )
     );
 
-  failure$: Observable<AuthFailure | null> = this.store.select(
-    fromStore.selectFailure
+  failureMessage$: Observable<string | null> = this.store.select(
+    fromStore.selectFailureMessage
   );
 
   isSubmitting$: Observable<boolean> = this.store.select(
@@ -27,10 +26,6 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
   );
 
   isSignedIn$: Observable<boolean> = this.store.select(fromStore.isSignedIn);
-
-  showErrorMessage$: Observable<boolean> = this.store.select(
-    fromStore.showErrorMessage
-  );
 
   constructor(private store: Store<fromStore.AuthState>) {}
 

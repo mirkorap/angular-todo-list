@@ -1,4 +1,3 @@
-import { AuthFailure } from '@auth/failures/auth-failure';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@auth/entities/user';
@@ -6,10 +5,9 @@ import { User } from '@auth/entities/user';
 @Injectable()
 export abstract class AuthStoreFacadeService {
   abstract user$: Observable<User | Record<string, never>>;
-  abstract failure$: Observable<AuthFailure | null>;
+  abstract failureMessage$: Observable<string | null>;
   abstract isSubmitting$: Observable<boolean>;
   abstract isSignedIn$: Observable<boolean>;
-  abstract showErrorMessage$: Observable<boolean>;
 
   abstract registerWithEmailAndPassword(
     emailAddress: string,
