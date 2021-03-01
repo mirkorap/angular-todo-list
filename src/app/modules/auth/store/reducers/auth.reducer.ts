@@ -24,8 +24,9 @@ export const authReducer = createReducer(
     fromActions.signInWithEmailAndPassword,
     fromActions.signInWithGoogle,
     fromActions.signOut,
-    (state) => ({
-      ...state,
+    (_) => ({
+      user: {},
+      failure: null,
       isSubmitting: true
     })
   ),
