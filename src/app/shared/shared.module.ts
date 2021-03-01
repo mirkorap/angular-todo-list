@@ -3,15 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './../material.module';
 import { NgModule } from '@angular/core';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ToastrModule.forRoot({
+      progressBar: true,
+      preventDuplicates: true,
+      positionClass: 'toast-top-center'
+    })
   ],
   exports: [
     CommonModule,
