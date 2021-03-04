@@ -1,3 +1,4 @@
+import * as fromServices from './services';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -24,6 +25,12 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule
+  ],
+  providers: [
+    {
+      provide: fromServices.DataStorageService,
+      useClass: fromServices.LocalStorageService
+    }
   ]
 })
 export class SharedModule {}
