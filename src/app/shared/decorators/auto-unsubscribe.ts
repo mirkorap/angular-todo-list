@@ -8,7 +8,7 @@ export function AutoUnsubscribe() {
           property.unsubscribe();
         }
       }
-      orig.apply();
+      orig?.apply();
     };
   };
 }
