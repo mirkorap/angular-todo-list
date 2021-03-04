@@ -1,4 +1,4 @@
-import { DataStorageService } from '@shared/services';
+import { DataStorageService } from '@shared/services/data-storage.service';
 import { IUserDto } from '@auth/data-transfer-objects/user';
 import { Injectable } from '@angular/core';
 
