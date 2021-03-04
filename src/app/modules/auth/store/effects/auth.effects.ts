@@ -1,18 +1,23 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from '@auth/services/auth.service';
+import { AuthStorageService } from '@auth/services/auth-storage.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Password } from '@auth/value-objects/password';
 import { TypedAction } from '@ngrx/store/src/models';
 import { User } from '@auth/entities/user';
 import { UserDto } from '@auth/data-transfer-objects/user';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private authStorage: AuthStorageService
+  ) {}
 
   registerWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
@@ -74,6 +79,28 @@ export class AuthEffects {
         return fromActions.signOutSuccess();
       })
     )
+  );
+
+  userSignedIn$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          fromActions.registerWithEmailAndPasswordSuccess,
+          fromActions.signInWithEmailAndPasswordSuccess,
+          fromActions.signInWithGoogleSuccess
+        ),
+        tap((action) => this.authStorage.setUser(action.user))
+      ),
+    { dispatch: false }
+  );
+
+  userSignedOut$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.signOutSuccess),
+        tap(() => this.authStorage.removeUser())
+      ),
+    { dispatch: false }
   );
 
   private dispatchFailureOrSuccess(
