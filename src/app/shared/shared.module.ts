@@ -1,18 +1,22 @@
 import * as fromServices from './services';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from './../material.module';
-import { NgModule } from '@angular/core';
+import { LoadingDirective } from './directives/loading.directive';
+import { MaterialModule } from '../material.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
+  declarations: [LoadingDirective],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot({
       progressBar: true,
       preventDuplicates: true,
@@ -24,13 +28,15 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    LoadingDirective
   ],
   providers: [
     {
       provide: fromServices.DataStorageService,
       useClass: fromServices.LocalStorageService
     }
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule {}
