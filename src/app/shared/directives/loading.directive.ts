@@ -11,7 +11,9 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
   selector: '[appLoading]'
 })
 export class LoadingDirective implements OnInit {
-  @Input('appLoading') loading = false;
+  @Input('appLoading') set loading(value: boolean) {
+    this.toggleSpinner(value);
+  }
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -20,11 +22,18 @@ export class LoadingDirective implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.createSpinnerComponent();
+  }
+
+  private createSpinnerComponent(): void {
     const factory = this.resolver.resolveComponentFactory(NgxSpinnerComponent);
     const component = this.viewContainer.createComponent(factory);
     component.instance.fullScreen = false;
     component.instance.type = 'pacman';
     component.instance.size = 'medium';
-    this.loading && this.ngxSpinner.show();
+  }
+
+  private toggleSpinner(canShow: boolean): void {
+    canShow ? this.ngxSpinner.show() : this.ngxSpinner.hide();
   }
 }
