@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthStoreFacadeService } from '@auth/services/auth-store-facade.service';
 import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -13,13 +14,19 @@ import { ToastrService } from 'ngx-toastr';
 @AutoUnsubscribe()
 export class SignInPageComponent implements OnInit {
   constructor(
-    private authStoreFacade: AuthStoreFacadeService,
+    public authStoreFacade: AuthStoreFacadeService,
+    private router: Router,
     private toastr: ToastrService
   ) {}
 
+  // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
     this.authStoreFacade.failureMessage$.subscribe(
       (message) => message && this.toastr.error(message)
+    );
+
+    this.authStoreFacade.isSignedIn$.subscribe(
+      (isSignedIn) => isSignedIn && this.router.navigateByUrl('/notes')
     );
   }
 

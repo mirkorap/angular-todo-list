@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output
 } from '@angular/core';
@@ -16,6 +17,8 @@ import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignInFormComponent implements OnInit {
+  @Input() isSubmitting = false;
+
   @Output() signIn = new EventEmitter<ICredentialsDto>();
   @Output() register = new EventEmitter<ICredentialsDto>();
   @Output() signInWithGoogle = new EventEmitter();
