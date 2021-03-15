@@ -1,4 +1,3 @@
-import * as fromServices from './services';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -30,12 +29,6 @@ import { ToastrModule } from 'ngx-toastr';
     MaterialModule,
     FlexLayoutModule,
     LoadingDirective
-  ],
-  providers: [
-    {
-      provide: fromServices.DataStorageService,
-      useClass: fromServices.LocalStorageService
-    }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

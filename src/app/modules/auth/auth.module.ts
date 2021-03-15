@@ -23,7 +23,6 @@ import { environment } from '@environments/environment';
     AngularFireAuthModule
   ],
   providers: [
-    fromServices.AuthStorageService,
     {
       provide: fromServices.AuthService,
       useClass: fromServices.FirebaseAuthService
