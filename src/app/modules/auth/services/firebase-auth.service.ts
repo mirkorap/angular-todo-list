@@ -1,3 +1,5 @@
+import { Observable, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from './auth.service';
@@ -15,18 +17,12 @@ export class FirebaseAuthService implements AuthService {
   async registerWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | User> {
+  ): Promise<AuthFailure | void> {
     try {
-      const firebaseUser = await this.auth.createUserWithEmailAndPassword(
+      await this.auth.createUserWithEmailAndPassword(
         emailAddress.value,
         password.value
       );
-
-      if (!firebaseUser.user) {
-        return AuthFailure.SERVER_ERROR;
-      }
-
-      return UserDto.fromFirebase(firebaseUser.user).toDomain();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         return AuthFailure.EMAIL_ALREADY_IN_USE;
@@ -39,18 +35,12 @@ export class FirebaseAuthService implements AuthService {
   async signInWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | User> {
+  ): Promise<AuthFailure | void> {
     try {
-      const firebaseUser = await this.auth.signInWithEmailAndPassword(
+      await this.auth.signInWithEmailAndPassword(
         emailAddress.value,
         password.value
       );
-
-      if (!firebaseUser.user) {
-        return AuthFailure.SERVER_ERROR;
-      }
-
-      return UserDto.fromFirebase(firebaseUser.user).toDomain();
     } catch (error) {
       if (['auth/user-not-found', 'auth/wrong-password'].includes(error.code)) {
         return AuthFailure.INVALID_EMAIL_AND_PASSWORD;
@@ -60,23 +50,29 @@ export class FirebaseAuthService implements AuthService {
     }
   }
 
-  async signInWithGoogle(): Promise<AuthFailure | User> {
+  async signInWithGoogle(): Promise<AuthFailure | void> {
     try {
-      const googleUser = await this.auth.signInWithPopup(
-        new firebase.auth.GoogleAuthProvider()
-      );
-
-      if (!googleUser.user) {
-        return AuthFailure.SERVER_ERROR;
-      }
-
-      return UserDto.fromFirebase(googleUser.user).toDomain();
+      const provider = new firebase.auth.GoogleAuthProvider();
+      await this.auth.signInWithPopup(provider);
     } catch (error) {
       return AuthFailure.CANCELLED_BY_USER;
     }
   }
 
   async signOut(): Promise<void> {
-    await this.auth.signOut();
+    return this.auth.signOut();
+  }
+
+  getCurrentUser(): Observable<AuthFailure | User> {
+    return this.auth.user.pipe(
+      switchMap((firebaseUser) => {
+        if (!firebaseUser) {
+          return of(AuthFailure.USER_NOT_SIGNED_IN);
+        }
+
+        return of(UserDto.fromFirebase(firebaseUser).toDomain());
+      }),
+      catchError(() => of(AuthFailure.SERVER_ERROR))
+    );
   }
 }
