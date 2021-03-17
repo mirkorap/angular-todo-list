@@ -1,6 +1,6 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from '@auth/services/auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
@@ -18,13 +18,13 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.registerWithEmailAndPassword),
       switchMap(async (action) => {
-        const failureOrUser = await this.authService.registerWithEmailAndPassword(
+        const maybeFailure = await this.authService.registerWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
         return this.dispatchFailureOrSuccess(
-          failureOrUser,
+          maybeFailure,
           fromActions.registerWithEmailAndPasswordFail,
           fromActions.registerWithEmailAndPasswordSuccess
         );
@@ -36,13 +36,13 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.signInWithEmailAndPassword),
       switchMap(async (action) => {
-        const failureOrUser = await this.authService.signInWithEmailAndPassword(
+        const maybeFailure = await this.authService.signInWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
         return this.dispatchFailureOrSuccess(
-          failureOrUser,
+          maybeFailure,
           fromActions.signInWithEmailAndPasswordFail,
           fromActions.signInWithEmailAndPasswordSuccess
         );
@@ -54,10 +54,10 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.signInWithGoogle),
       switchMap(async () => {
-        const failureOrUser = await this.authService.signInWithGoogle();
+        const maybeFailure = await this.authService.signInWithGoogle();
 
         return this.dispatchFailureOrSuccess(
-          failureOrUser,
+          maybeFailure,
           fromActions.signInWithGoogleFail,
           fromActions.signInWithGoogleSuccess
         );
@@ -76,17 +76,34 @@ export class AuthEffects {
     )
   );
 
+  requestAuthCheck$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.requestAuthCheck),
+      switchMap(() => {
+        return this.authService.getCurrentUser().pipe(
+          map((failureOrUser) => {
+            if (failureOrUser instanceof User) {
+              return fromActions.requestAuthCheckSuccess({
+                user: UserDto.fromDomain(failureOrUser).toObject()
+              });
+            }
+
+            return fromActions.requestAuthCheckFail({ failure: failureOrUser });
+          })
+        );
+      })
+    )
+  );
+
   private dispatchFailureOrSuccess(
-    failureOrUser: AuthFailure | User,
+    maybeFailure: AuthFailure | void,
     failureAction: fromActions.failureActionType,
     successAction: fromActions.successActionType
   ): TypedAction<string> {
-    if (failureOrUser instanceof User) {
-      return successAction({
-        user: UserDto.fromDomain(failureOrUser).toObject()
-      });
+    if ((<any>Object).values(AuthFailure).includes(maybeFailure)) {
+      return failureAction({ failure: maybeFailure as AuthFailure });
     }
 
-    return failureAction({ failure: failureOrUser });
+    return successAction();
   }
 }
