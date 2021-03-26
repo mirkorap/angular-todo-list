@@ -1,4 +1,5 @@
 import * as fromStore from '@auth/store';
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -47,5 +48,15 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
 
   signOut(): void {
     this.store.dispatch(fromStore.signOut());
+  }
+
+  authorize(user: User): void {
+    this.store.dispatch(
+      fromStore.authorize({ user: UserDto.fromDomain(user).toObject() })
+    );
+  }
+
+  unauthorize(failure: AuthFailure): void {
+    this.store.dispatch(fromStore.unauthorize({ failure }));
   }
 }

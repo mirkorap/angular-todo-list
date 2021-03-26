@@ -1,3 +1,4 @@
+import { AuthFailure } from '@auth/failures/auth-failure';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@auth/entities/user';
@@ -22,4 +23,8 @@ export abstract class AuthStoreFacadeService {
   abstract signInWithGoogle(): void;
 
   abstract signOut(): void;
+
+  abstract authorize(user: User): void;
+
+  abstract unauthorize(failure: AuthFailure): void;
 }

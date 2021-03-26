@@ -1,18 +1,15 @@
-import * as fromStore from '@auth/store';
+import { AuthService, AuthStoreFacadeService } from '@auth/services';
 import { CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { AuthService } from '@auth/services';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { User } from '@auth/entities/user';
-import { UserDto } from '@auth/data-transfer-objects/user';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class NotAuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
-    private store: Store<fromStore.AuthState>,
+    private authStoreFacade: AuthStoreFacadeService,
     private router: Router
   ) {}
 
@@ -22,8 +19,7 @@ export class NotAuthGuard implements CanActivate {
         const isSignedIn = failureOrUser instanceof User;
 
         if (isSignedIn) {
-          const user = UserDto.fromDomain(failureOrUser as User).toObject();
-          this.store.dispatch(fromStore.authorize({ user }));
+          this.authStoreFacade.authorize(failureOrUser as User);
           this.router.navigateByUrl('/notes');
         }
 
