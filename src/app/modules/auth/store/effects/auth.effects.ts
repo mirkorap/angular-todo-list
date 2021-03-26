@@ -1,6 +1,5 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from '@auth/services/auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
@@ -9,6 +8,7 @@ import { Password } from '@auth/value-objects/password';
 import { TypedAction } from '@ngrx/store/src/models';
 import { User } from '@auth/entities/user';
 import { UserDto } from '@auth/data-transfer-objects/user';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
@@ -18,13 +18,13 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.registerWithEmailAndPassword),
       switchMap(async (action) => {
-        const maybeFailure = await this.authService.registerWithEmailAndPassword(
+        const failureOrUser = await this.authService.registerWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
         return this.dispatchFailureOrSuccess(
-          maybeFailure,
+          failureOrUser,
           fromActions.registerWithEmailAndPasswordFail,
           fromActions.registerWithEmailAndPasswordSuccess
         );
@@ -36,13 +36,13 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.signInWithEmailAndPassword),
       switchMap(async (action) => {
-        const maybeFailure = await this.authService.signInWithEmailAndPassword(
+        const failureOrUser = await this.authService.signInWithEmailAndPassword(
           new EmailAddress(action.emailAddress),
           new Password(action.password)
         );
 
         return this.dispatchFailureOrSuccess(
-          maybeFailure,
+          failureOrUser,
           fromActions.signInWithEmailAndPasswordFail,
           fromActions.signInWithEmailAndPasswordSuccess
         );
@@ -54,10 +54,10 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.signInWithGoogle),
       switchMap(async () => {
-        const maybeFailure = await this.authService.signInWithGoogle();
+        const failureOrUser = await this.authService.signInWithGoogle();
 
         return this.dispatchFailureOrSuccess(
-          maybeFailure,
+          failureOrUser,
           fromActions.signInWithGoogleFail,
           fromActions.signInWithGoogleSuccess
         );
@@ -76,34 +76,17 @@ export class AuthEffects {
     )
   );
 
-  requestAuthCheck$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.requestAuthCheck),
-      switchMap(() => {
-        return this.authService.getCurrentUser().pipe(
-          map((failureOrUser) => {
-            if (failureOrUser instanceof User) {
-              return fromActions.requestAuthCheckSuccess({
-                user: UserDto.fromDomain(failureOrUser).toObject()
-              });
-            }
-
-            return fromActions.requestAuthCheckFail({ failure: failureOrUser });
-          })
-        );
-      })
-    )
-  );
-
   private dispatchFailureOrSuccess(
-    maybeFailure: AuthFailure | void,
+    failureOrUser: AuthFailure | User,
     failureAction: fromActions.failureActionType,
     successAction: fromActions.successActionType
   ): TypedAction<string> {
-    if ((<any>Object).values(AuthFailure).includes(maybeFailure)) {
-      return failureAction({ failure: maybeFailure as AuthFailure });
+    if (failureOrUser instanceof User) {
+      return successAction({
+        user: UserDto.fromDomain(failureOrUser).toObject()
+      });
     }
 
-    return successAction();
+    return failureAction({ failure: failureOrUser });
   }
 }

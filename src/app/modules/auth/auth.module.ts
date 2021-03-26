@@ -1,9 +1,9 @@
+import * as fromGuards from './guards';
 import * as fromServices from './services';
 import { AuthEffects, authFeatureKey, authReducer } from './store';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
-import { AuthGuard } from './guards/auth.guard';
 import { AuthRoutingModule } from './auth-routing.module';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from '@shared/shared.module';
@@ -37,7 +37,7 @@ export class AuthModule {
   static forRoot(): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
-      providers: [AuthGuard]
+      providers: [fromGuards.AuthGuard, fromGuards.NotAuthGuard]
     };
   }
 }

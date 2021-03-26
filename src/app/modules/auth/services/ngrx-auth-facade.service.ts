@@ -48,8 +48,4 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
   signOut(): void {
     this.store.dispatch(fromStore.signOut());
   }
-
-  requestAuthCheck(): void {
-    this.store.dispatch(fromStore.requestAuthCheck());
-  }
 }

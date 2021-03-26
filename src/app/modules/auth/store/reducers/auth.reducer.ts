@@ -24,7 +24,6 @@ export const authReducer = createReducer(
     fromActions.signInWithEmailAndPassword,
     fromActions.signInWithGoogle,
     fromActions.signOut,
-    fromActions.requestAuthCheck,
     (state) => ({
       ...state,
       isSubmitting: true
@@ -34,9 +33,10 @@ export const authReducer = createReducer(
     fromActions.registerWithEmailAndPasswordSuccess,
     fromActions.signInWithEmailAndPasswordSuccess,
     fromActions.signInWithGoogleSuccess,
-    fromActions.signOutSuccess,
-    (state) => ({
+    fromActions.authorize,
+    (state, action) => ({
       ...state,
+      user: action.user,
       isSubmitting: false
     })
   ),
@@ -44,15 +44,14 @@ export const authReducer = createReducer(
     fromActions.registerWithEmailAndPasswordFail,
     fromActions.signInWithEmailAndPasswordFail,
     fromActions.signInWithGoogleFail,
-    fromActions.requestAuthCheckFail,
+    fromActions.unauthorize,
     (state, action) => ({
       ...state,
       failure: action.failure,
       isSubmitting: false
     })
   ),
-  on(fromActions.requestAuthCheckSuccess, (state, action) => ({
-    ...state,
-    user: action.user
+  on(fromActions.signOutSuccess, () => ({
+    ...initialState
   }))
 );

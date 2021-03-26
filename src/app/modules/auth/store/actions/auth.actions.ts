@@ -10,7 +10,8 @@ export const registerWithEmailAndPassword = createAction(
 );
 
 export const registerWithEmailAndPasswordSuccess = createAction(
-  '[Auth] Register With Email And Password Success'
+  '[Auth] Register With Email And Password Success',
+  props<{ user: IUserDto }>()
 );
 
 export const registerWithEmailAndPasswordFail = createAction(
@@ -25,7 +26,8 @@ export const signInWithEmailAndPassword = createAction(
 );
 
 export const signInWithEmailAndPasswordSuccess = createAction(
-  '[Auth] Sign In With Email And Password Success'
+  '[Auth] Sign In With Email And Password Success',
+  props<{ user: IUserDto }>()
 );
 
 export const signInWithEmailAndPasswordFail = createAction(
@@ -37,7 +39,8 @@ export const signInWithEmailAndPasswordFail = createAction(
 export const signInWithGoogle = createAction('[Auth] Sign In With Google');
 
 export const signInWithGoogleSuccess = createAction(
-  '[Auth] Sign In With Google Success'
+  '[Auth] Sign In With Google Success',
+  props<{ user: IUserDto }>()
 );
 
 export const signInWithGoogleFail = createAction(
@@ -50,16 +53,14 @@ export const signOut = createAction('[Auth] Sign Out');
 
 export const signOutSuccess = createAction('[Auth] Sign Out Success');
 
-// requestAuthCheck actions
-export const requestAuthCheck = createAction('[Auth] Request Auth Check');
-
-export const requestAuthCheckSuccess = createAction(
-  '[Auth] Request Auth Check Success',
+// authorize / unauthorize actions
+export const authorize = createAction(
+  '[Auth] Authorize User',
   props<{ user: IUserDto }>()
 );
 
-export const requestAuthCheckFail = createAction(
-  '[Auth] Request Auth Check Fail',
+export const unauthorize = createAction(
+  '[Auth] Unauthorize User',
   props<{ failure: AuthFailure }>()
 );
 
@@ -67,4 +68,6 @@ export type failureActionType = (props: {
   failure: AuthFailure;
 }) => TypedAction<string>;
 
-export type successActionType = () => TypedAction<string>;
+export type successActionType = (props: {
+  user: IUserDto;
+}) => TypedAction<string>;

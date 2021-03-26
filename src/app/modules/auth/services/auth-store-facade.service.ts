@@ -22,6 +22,4 @@ export abstract class AuthStoreFacadeService {
   abstract signInWithGoogle(): void;
 
   abstract signOut(): void;
-
-  abstract requestAuthCheck(): void;
 }

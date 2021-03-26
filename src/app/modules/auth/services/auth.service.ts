@@ -10,14 +10,14 @@ export abstract class AuthService {
   abstract registerWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | void>;
+  ): Promise<AuthFailure | User>;
 
   abstract signInWithEmailAndPassword(
     emailAddress: EmailAddress,
     password: Password
-  ): Promise<AuthFailure | void>;
+  ): Promise<AuthFailure | User>;
 
-  abstract signInWithGoogle(): Promise<AuthFailure | void>;
+  abstract signInWithGoogle(): Promise<AuthFailure | User>;
 
   abstract signOut(): Promise<void>;
 
