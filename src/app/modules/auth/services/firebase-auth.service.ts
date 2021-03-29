@@ -78,7 +78,7 @@ export class FirebaseAuthService implements AuthService {
     }
   }
 
-  async signOut(): Promise<void> {
+  signOut(): Promise<void> {
     return this.auth.signOut();
   }
 
