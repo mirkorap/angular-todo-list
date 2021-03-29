@@ -1,4 +1,5 @@
 import * as fromStore from '@auth/store';
+import { filter, map } from 'rxjs/operators';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
 import { Injectable } from '@angular/core';
@@ -6,7 +7,6 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { User } from '@auth/entities/user';
 import { UserDto } from '@auth/data-transfer-objects/user';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NgrxAuthFacadeService implements AuthStoreFacadeService {
@@ -18,9 +18,11 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
       )
     );
 
-  failureMessage$: Observable<string | null> = this.store.select(
-    fromStore.selectFailureMessage
-  );
+  failureMessage$: Observable<string> = this.store
+    .select(fromStore.selectFailureMessage)
+    .pipe(
+      filter((failureMessage): failureMessage is string => !!failureMessage)
+    );
 
   isSubmitting$: Observable<boolean> = this.store.select(
     fromStore.isSubmitting

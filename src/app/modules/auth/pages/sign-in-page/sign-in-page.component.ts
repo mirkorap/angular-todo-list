@@ -21,8 +21,8 @@ export class SignInPageComponent implements OnInit {
 
   // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
-    this.authStoreFacade.failureMessage$.subscribe(
-      (message) => message && this.toastr.error(message)
+    this.authStoreFacade.failureMessage$.subscribe((message) =>
+      this.toastr.error(message)
     );
 
     this.authStoreFacade.isSignedIn$.subscribe(
