@@ -17,23 +17,25 @@ export class AuthGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.authService.getCurrentUser().pipe(
       switchMap((failureOrUser) => {
-        const isSignedIn = failureOrUser instanceof User;
-        this.dispatchAuthAction(failureOrUser);
-
-        if (!isSignedIn) {
-          this.router.navigateByUrl('/auth');
+        if (failureOrUser instanceof User) {
+          return this.markAsAuthorized(failureOrUser);
         }
 
-        return of(isSignedIn);
+        return this.markAsUnauthorized(failureOrUser);
       })
     );
   }
 
-  private dispatchAuthAction(failureOrUser: AuthFailure | User): void {
-    if (failureOrUser instanceof User) {
-      return this.authStoreFacade.authorize(failureOrUser);
-    }
+  private markAsAuthorized(user: User): Observable<boolean> {
+    this.authStoreFacade.authorize(user);
 
-    return this.authStoreFacade.unauthorize(failureOrUser);
+    return of(true);
+  }
+
+  private markAsUnauthorized(failure: AuthFailure): Observable<boolean> {
+    this.authStoreFacade.unauthorize(failure);
+    this.router.navigateByUrl('/auth');
+
+    return of(false);
   }
 }
