@@ -16,15 +16,19 @@ export class NotAuthGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.authService.getCurrentUser().pipe(
       switchMap((failureOrUser) => {
-        const isSignedIn = failureOrUser instanceof User;
-
-        if (isSignedIn) {
-          this.authStoreFacade.authorize(failureOrUser as User);
-          this.router.navigateByUrl('/notes');
+        if (failureOrUser instanceof User) {
+          return this.markAsAuthorized(failureOrUser);
         }
 
-        return of(!isSignedIn);
+        return of(true);
       })
     );
+  }
+
+  private markAsAuthorized(user: User): Observable<boolean> {
+    this.authStoreFacade.authorize(user);
+    this.router.navigateByUrl('/notes');
+
+    return of(false);
   }
 }
