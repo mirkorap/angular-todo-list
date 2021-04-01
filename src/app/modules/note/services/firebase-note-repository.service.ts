@@ -24,9 +24,9 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
           .collection<Omit<INoteDto, 'id'>>('notes')
           .snapshotChanges()
           .pipe(
-            map((noteDoc) =>
-              noteDoc.map((note) =>
-                NoteDto.fromFirebase(note.payload.doc).toDomain()
+            map((noteDocs) =>
+              noteDocs.map((noteDoc) =>
+                NoteDto.fromFirebase(noteDoc.payload.doc).toDomain()
               )
             )
           );
@@ -46,14 +46,12 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
           .collection<Omit<INoteDto, 'id'>>('notes')
           .snapshotChanges()
           .pipe(
-            map((noteDoc) =>
-              noteDoc.map((note) =>
-                NoteDto.fromFirebase(note.payload.doc).toDomain()
+            map((noteDocs) =>
+              noteDocs.map((noteDoc) =>
+                NoteDto.fromFirebase(noteDoc.payload.doc).toDomain()
               )
             ),
-            filter((notes) =>
-              notes.some((note) => note.todos.value.some((todo) => !todo.done))
-            )
+            filter((notes) => notes.some((note) => note.isUncompleted()))
           );
       }),
       catchError(() => {
@@ -97,13 +95,12 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
   async delete(note: Note): Promise<NoteFailure | void> {
     try {
       const firebaseUser = await this.auth.currentUser;
-      const noteDto = NoteDto.fromDomain(note);
 
       await this.firestore
         .collection('users')
         .doc(firebaseUser?.uid)
         .collection('notes')
-        .doc(noteDto.id)
+        .doc(note.id.value)
         .delete();
     } catch (error) {
       return NoteFailure.SERVER_ERROR;

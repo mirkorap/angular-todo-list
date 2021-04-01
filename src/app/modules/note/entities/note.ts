@@ -23,4 +23,12 @@ export class Note {
     this.color = color;
     this.todos = todos;
   }
+
+  isCompleted(): boolean {
+    return this.todos.value.every((todo) => todo.isCompleted());
+  }
+
+  isUncompleted(): boolean {
+    return !this.isCompleted();
+  }
 }

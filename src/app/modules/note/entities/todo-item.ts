@@ -11,4 +11,12 @@ export class TodoItem {
     this.name = name;
     this.done = done;
   }
+
+  isCompleted(): boolean {
+    return this.done;
+  }
+
+  isUncompleted(): boolean {
+    return !this.isCompleted();
+  }
 }
