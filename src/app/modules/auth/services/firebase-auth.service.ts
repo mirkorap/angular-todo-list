@@ -1,3 +1,5 @@
+import { Observable, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from './auth.service';
@@ -76,7 +78,20 @@ export class FirebaseAuthService implements AuthService {
     }
   }
 
-  async signOut(): Promise<void> {
-    await this.auth.signOut();
+  signOut(): Promise<void> {
+    return this.auth.signOut();
+  }
+
+  getCurrentUser(): Observable<AuthFailure | User> {
+    return this.auth.user.pipe(
+      switchMap((firebaseUser) => {
+        if (!firebaseUser) {
+          return of(AuthFailure.USER_NOT_SIGNED_IN);
+        }
+
+        return of(UserDto.fromFirebase(firebaseUser).toDomain());
+      }),
+      catchError(() => of(AuthFailure.SERVER_ERROR))
+    );
   }
 }

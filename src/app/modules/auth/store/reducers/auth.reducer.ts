@@ -33,9 +33,10 @@ export const authReducer = createReducer(
     fromActions.registerWithEmailAndPasswordSuccess,
     fromActions.signInWithEmailAndPasswordSuccess,
     fromActions.signInWithGoogleSuccess,
-    (_, action) => ({
+    fromActions.authorize,
+    (state, action) => ({
+      ...state,
       user: action.user,
-      failure: null,
       isSubmitting: false
     })
   ),
@@ -43,8 +44,9 @@ export const authReducer = createReducer(
     fromActions.registerWithEmailAndPasswordFail,
     fromActions.signInWithEmailAndPasswordFail,
     fromActions.signInWithGoogleFail,
-    (_, action) => ({
-      user: {},
+    fromActions.unauthorize,
+    (state, action) => ({
+      ...state,
       failure: action.failure,
       isSubmitting: false
     })

@@ -53,6 +53,17 @@ export const signOut = createAction('[Auth] Sign Out');
 
 export const signOutSuccess = createAction('[Auth] Sign Out Success');
 
+// authorize / unauthorize actions
+export const authorize = createAction(
+  '[Auth] Authorize User',
+  props<{ user: IUserDto }>()
+);
+
+export const unauthorize = createAction(
+  '[Auth] Unauthorize User',
+  props<{ failure: AuthFailure }>()
+);
+
 export type failureActionType = (props: {
   failure: AuthFailure;
 }) => TypedAction<string>;

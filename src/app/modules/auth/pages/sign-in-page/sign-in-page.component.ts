@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthStoreFacadeService } from '@auth/services/auth-store-facade.service';
+import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-in-page',
@@ -8,8 +11,24 @@ import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
   styleUrls: ['./sign-in-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SignInPageComponent {
-  constructor(private authStoreFacade: AuthStoreFacadeService) {}
+@AutoUnsubscribe()
+export class SignInPageComponent implements OnInit {
+  constructor(
+    public authStoreFacade: AuthStoreFacadeService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  // TODO: move these logic to facade? See RxJS blog posts
+  ngOnInit(): void {
+    this.authStoreFacade.failureMessage$.subscribe((failureMessage) =>
+      this.toastr.error(failureMessage)
+    );
+
+    this.authStoreFacade.isSignedIn$.subscribe(
+      (isSignedIn) => isSignedIn && this.router.navigateByUrl('/notes')
+    );
+  }
 
   onSignIn(credentials: ICredentialsDto): void {
     this.authStoreFacade.signInWithEmailAndPassword(

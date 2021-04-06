@@ -4,6 +4,7 @@
   fxLayoutAlign="center center"
 >
   <app-sign-in-form
+    [isSubmitting]="(authStoreFacade.isSubmitting$ | async)!"
     (signIn)="onSignIn($event)"
     (register)="onRegister($event)"
     (signInWithGoogle)="onSignInWithGoogle()"

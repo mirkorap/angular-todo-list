@@ -6,10 +6,9 @@ import { User } from '@auth/entities/user';
 @Injectable()
 export abstract class AuthStoreFacadeService {
   abstract user$: Observable<User | Record<string, never>>;
-  abstract failure$: Observable<AuthFailure | null>;
+  abstract failureMessage$: Observable<string>;
   abstract isSubmitting$: Observable<boolean>;
   abstract isSignedIn$: Observable<boolean>;
-  abstract showErrorMessage$: Observable<boolean>;
 
   abstract registerWithEmailAndPassword(
     emailAddress: string,
@@ -24,4 +23,8 @@ export abstract class AuthStoreFacadeService {
   abstract signInWithGoogle(): void;
 
   abstract signOut(): void;
+
+  abstract authorize(user: User): void;
+
+  abstract unauthorize(failure: AuthFailure): void;
 }
