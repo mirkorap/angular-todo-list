@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export abstract class NoteStoreFacadeService {
   abstract notes$: Observable<INoteDto[]>;
-  abstract failureMessage$: Observable<string | null>;
+  abstract failureMessage$: Observable<string>;
   abstract isLoading$: Observable<boolean>;
   abstract isLoaded$: Observable<boolean>;
 
