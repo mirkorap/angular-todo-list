@@ -65,7 +65,7 @@ export class NoteDto implements INoteDto {
       new NoteBody(this.body),
       new NoteColor(this.color),
       new LimitedList(
-        this.todos.map((todo) => (todo as TodoItemDto).toDomain()),
+        this.todos.map((todo) => TodoItemDto.fromObject(todo).toDomain()),
         Note.MAX_TODOS_NUMBER
       )
     );
