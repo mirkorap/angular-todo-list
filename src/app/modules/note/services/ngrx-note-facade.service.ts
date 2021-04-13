@@ -1,14 +1,19 @@
 import * as fromStore from '@note/store';
-import { INoteDto } from '@note/data-transfer-objects/note';
+import { filter, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Note } from '@note/entities/note';
+import { NoteDto } from '@note/data-transfer-objects/note';
 import { NoteStoreFacadeService } from './note-store-facade.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class NgrxNoteFacadeService implements NoteStoreFacadeService {
-  notes$: Observable<INoteDto[]> = this.store.select(fromStore.selectNotes);
+  notes$: Observable<Note[]> = this.store
+    .select(fromStore.selectNotes)
+    .pipe(
+      map((notes) => notes.map((note) => NoteDto.fromObject(note).toDomain()))
+    );
 
   failureMessage$: Observable<string> = this.store
     .select(fromStore.selectFailureMessage)
