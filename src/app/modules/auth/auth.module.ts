@@ -1,6 +1,6 @@
 import * as fromGuards from './guards';
 import * as fromServices from './services';
-import { AuthEffects, authFeatureKey, authReducer } from './store';
+import * as fromStore from './store';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
@@ -17,8 +17,8 @@ import { environment } from '@environments/environment';
   imports: [
     SharedModule,
     AuthRoutingModule,
-    EffectsModule.forFeature([AuthEffects]),
-    StoreModule.forFeature(authFeatureKey, authReducer),
+    EffectsModule.forFeature([fromStore.AuthEffects]),
+    StoreModule.forFeature(fromStore.authFeatureKey, fromStore.authReducer),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule
   ],
