@@ -1,10 +1,11 @@
+import { Entity } from '@shared/entities/entity';
 import { LimitedList } from '@shared/value-objects/limited-list';
 import { NoteBody } from '@note/value-objects/note-body';
 import { NoteColor } from '@note/value-objects/note-color';
 import { TodoItem } from './todo-item';
 import { UniqueId } from '@shared/value-objects/uuid';
 
-export class Note {
+export class Note extends Entity {
   static MAX_TODOS_NUMBER = 3;
 
   id: UniqueId;
@@ -18,6 +19,7 @@ export class Note {
     color: NoteColor,
     todos: LimitedList<TodoItem>
   ) {
+    super();
     this.id = id;
     this.body = body;
     this.color = color;
