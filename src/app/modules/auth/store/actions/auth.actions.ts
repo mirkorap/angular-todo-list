@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { IUserDto } from '@auth/data-transfer-objects/user';
-import { TypedAction } from '@ngrx/store/src/models';
 
 // RegisterWithEmailAndPassword actions
 export const registerWithEmailAndPassword = createAction(
@@ -63,11 +62,3 @@ export const unauthorize = createAction(
   '[Auth] Unauthorize User',
   props<{ failure: AuthFailure }>()
 );
-
-export type failureActionType = (props: {
-  failure: AuthFailure;
-}) => TypedAction<string>;
-
-export type successActionType = (props: {
-  user: IUserDto;
-}) => TypedAction<string>;
