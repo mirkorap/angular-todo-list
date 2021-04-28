@@ -33,4 +33,12 @@ export class Note extends Entity {
   isUncompleted(): boolean {
     return !this.isCompleted();
   }
+
+  updateTodo(todo: TodoItem): void {
+    const todos = this.todos.value.map((item) => {
+      return item.id === todo.id ? todo : item;
+    });
+
+    this.todos = new LimitedList(todos, Note.MAX_TODOS_NUMBER);
+  }
 }
