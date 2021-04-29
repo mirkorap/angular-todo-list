@@ -1,40 +1,51 @@
 import { createAction, props } from '@ngrx/store';
 import { INoteDto } from '@note/data-transfer-objects/note';
 import { NoteFailure } from '@note/failures/note-failure';
-import { TypedAction } from '@ngrx/store/src/models';
 
-// LoadAllNotes actions
-export const loadAllNotes = createAction('[Note] Load All Notes');
-
-export const loadAllNotesSuccess = createAction(
-  '[Note] Load All Notes Success',
-  props<{ notes: INoteDto[] }>()
+// CreateNote actions
+export const createNote = createAction(
+  '[Note] Create Note',
+  props<{ note: INoteDto }>()
 );
 
-export const loadAllNotesFail = createAction(
-  '[Note] Load All Notes Fail',
+export const createNoteSuccess = createAction(
+  '[Note] Create Note Success',
+  props<{ note: INoteDto }>()
+);
+
+export const createNoteFail = createAction(
+  '[Note] Create Note Fail',
   props<{ failure: NoteFailure }>()
 );
 
-// LoadUncompletedNotes actions
-export const loadUncompletedNotes = createAction(
-  '[Note] Load Uncompleted Notes'
+// UpdateNote actions
+export const updateNote = createAction(
+  '[Note] Update Note',
+  props<{ note: INoteDto }>()
 );
 
-export const loadUncompletedNotesSuccess = createAction(
-  '[Note] Load Uncompleted Notes Success',
-  props<{ notes: INoteDto[] }>()
+export const updateNoteSuccess = createAction(
+  '[Note] Update Note Success',
+  props<{ note: INoteDto }>()
 );
 
-export const loadUncompletedNotesFail = createAction(
-  '[Note] Load Uncompleted Notes Fail',
+export const updateNoteFail = createAction(
+  '[Note] Update Note Fail',
   props<{ failure: NoteFailure }>()
 );
 
-export type failureActionType = (props: {
-  failure: NoteFailure;
-}) => TypedAction<string>;
+// DeleteNote actions
+export const deleteNote = createAction(
+  '[Note] Delete Note',
+  props<{ note: INoteDto }>()
+);
 
-export type successActionType = (props: {
-  notes: INoteDto[];
-}) => TypedAction<string>;
+export const deleteNoteSuccess = createAction(
+  '[Note] Delete Note Success',
+  props<{ note: INoteDto }>()
+);
+
+export const deleteNoteFail = createAction(
+  '[Note] Delete Note Fail',
+  props<{ failure: NoteFailure }>()
+);
