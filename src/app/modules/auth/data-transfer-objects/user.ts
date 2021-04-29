@@ -41,11 +41,7 @@ export class UserDto implements IUserDto {
   }
 
   toObject(): IUserDto {
-    return {
-      id: this.id,
-      emailAddress: this.emailAddress,
-      displayName: this.displayName
-    };
+    return JSON.parse(JSON.stringify(this));
   }
 
   toDomain(): User {

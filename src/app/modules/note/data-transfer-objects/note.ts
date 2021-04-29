@@ -51,12 +51,7 @@ export class NoteDto implements INoteDto {
   }
 
   toObject(): INoteDto {
-    return {
-      id: this.id,
-      body: this.body,
-      color: this.color,
-      todos: this.todos
-    };
+    return JSON.parse(JSON.stringify(this));
   }
 
   toDomain(): Note {
