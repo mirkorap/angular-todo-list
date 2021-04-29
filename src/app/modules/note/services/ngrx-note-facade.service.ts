@@ -36,4 +36,22 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   loadUncompletedNotes(): void {
     this.store.dispatch(fromStore.loadUncompletedNotes());
   }
+
+  createNote(note: Note): void {
+    this.store.dispatch(
+      fromStore.createNote({ note: NoteDto.fromDomain(note).toObject() })
+    );
+  }
+
+  updateNote(note: Note): void {
+    this.store.dispatch(
+      fromStore.updateNote({ note: NoteDto.fromDomain(note).toObject() })
+    );
+  }
+
+  deleteNote(note: Note): void {
+    this.store.dispatch(
+      fromStore.deleteNote({ note: NoteDto.fromDomain(note).toObject() })
+    );
+  }
 }

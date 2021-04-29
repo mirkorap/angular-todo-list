@@ -12,4 +12,10 @@ export abstract class NoteStoreFacadeService {
   abstract loadAllNotes(): void;
 
   abstract loadUncompletedNotes(): void;
+
+  abstract createNote(note: Note): void;
+
+  abstract updateNote(note: Note): void;
+
+  abstract deleteNote(note: Note): void;
 }
