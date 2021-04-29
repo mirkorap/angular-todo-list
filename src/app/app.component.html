@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<main>
+  <mat-toolbar class="mb-10" color="primary">
+    <mat-toolbar-row class="justify-between">
+      <span>Angular Todo List</span>
+
+      <ng-container *ngIf="authStoreFacade.isSignedIn$ | async">
+        <span>{{ (authStoreFacade.user$ | async)!.displayName }}</span>
+
+        <button mat-icon-button (click)="signOut()">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </ng-container>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <router-outlet></router-outlet>
+</main>
