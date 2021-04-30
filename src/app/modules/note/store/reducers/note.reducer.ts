@@ -1,4 +1,4 @@
-import * as fromActions from '@note/store/actions/note.actions';
+import * as fromActions from '@note/store/actions';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { INoteDto } from '@note/data-transfer-objects/note';
@@ -41,11 +41,20 @@ export const noteReducer = createReducer(
   on(
     fromActions.loadAllNotesFail,
     fromActions.loadUncompletedNotesFail,
+    fromActions.createNoteFail,
+    fromActions.updateNoteFail,
+    fromActions.deleteNoteFail,
     (state, action) => ({
       ...state,
       failure: action.failure,
       isLoading: false,
       isLoaded: false
     })
-  )
+  ),
+  on(fromActions.createNoteSuccess, (state, action) => {
+    return adapter.addOne(action.note, state);
+  }),
+  on(fromActions.deleteNoteSuccess, (state, action) => {
+    return adapter.removeOne(action.note.id, state);
+  })
 );
