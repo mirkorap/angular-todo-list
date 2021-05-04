@@ -1,1 +1,25 @@
-<p>note-overview-page works!</p>
+<div
+  class="container container--full"
+  fxLayout="row"
+  fxLayoutAlign="center"
+  [appLoading]="(noteStoreFacade.isLoading$ | async)!"
+>
+  <div fxLayout="column" fxFlex="50">
+    <div class="mb-5" fxLayout="row" fxLayoutAlign="end">
+      <mat-checkbox
+        color="primary"
+        (change)="onUncompletedFilterChange($event.checked)"
+      >
+        Filter by uncompleted
+      </mat-checkbox>
+    </div>
+
+    <app-note-card
+      *ngFor="let note of noteStoreFacade.notes$ | async"
+      class="mb-5"
+      [note]="note"
+      (noteChange)="onNoteChange($event)"
+      (noteDelete)="onNoteDelete($event)"
+    ></app-note-card>
+  </div>
+</div>
