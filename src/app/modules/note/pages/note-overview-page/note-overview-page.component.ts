@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services/note-store-facade.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-note-overview-page',
@@ -9,10 +10,18 @@ import { NoteStoreFacadeService } from '@note/services/note-store-facade.service
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteOverviewPageComponent implements OnInit {
-  constructor(public noteStoreFacade: NoteStoreFacadeService) {}
+  constructor(
+    public noteStoreFacade: NoteStoreFacadeService,
+    private toastr: ToastrService
+  ) {}
 
+  // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
     this.noteStoreFacade.loadAllNotes();
+
+    this.noteStoreFacade.failureMessage$.subscribe((failureMessage) =>
+      this.toastr.error(failureMessage)
+    );
   }
 
   onUncompletedFilterChange(checked: boolean): void {
