@@ -38,9 +38,6 @@ export class NoteOverviewPageComponent implements OnInit {
 
   onNoteDelete(note: Note): void {
     const confirmed = confirm('Are you sure you want to delete this note?');
-
-    if (confirmed) {
-      this.noteStoreFacade.deleteNote(note);
-    }
+    confirmed && this.noteStoreFacade.deleteNote(note);
   }
 }
