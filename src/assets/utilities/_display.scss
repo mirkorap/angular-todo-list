@@ -1,0 +1,31 @@
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+@each $name, $breakpoint in $breakpoints {
+  .block-#{$name} {
+    @media (min-width: $breakpoint) {
+      display: block;
+    }
+  }
+
+  .flex-#{$name} {
+    @media (min-width: $breakpoint) {
+      display: flex;
+    }
+  }
+
+  .hidden-#{$name} {
+    @media (min-width: $breakpoint) {
+      display: none;
+    }
+  }
+}

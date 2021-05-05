@@ -4,8 +4,13 @@
   fxLayoutAlign="center"
   [appLoading]="(noteStoreFacade.isLoading$ | async)!"
 >
-  <div fxLayout="column" fxFlex="50">
-    <div class="mb-5" fxLayout="row" fxLayoutAlign="end">
+  <div fxLayout="column" fxFlex.gt-xs="50">
+    <div
+      class="mb-5"
+      fxLayout="row"
+      fxLayoutAlign="center"
+      fxLayoutAlign.gt-xs="end"
+    >
       <mat-checkbox
         color="primary"
         (change)="onUncompletedFilterChange($event.checked)"

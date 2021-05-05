@@ -4,7 +4,9 @@
       <span>Angular Todo List</span>
 
       <ng-container *ngIf="authStoreFacade.isSignedIn$ | async">
-        <span>{{ (authStoreFacade.user$ | async)!.displayName }}</span>
+        <span class="hidden block-sm">
+          {{ (authStoreFacade.user$ | async)!.displayName }}
+        </span>
 
         <button mat-icon-button (click)="signOut()">
           <mat-icon>exit_to_app</mat-icon>
