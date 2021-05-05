@@ -4,7 +4,11 @@
   </mat-card-header>
 
   <mat-card-content fxFill>
-    <form [formGroup]="authForm" [appLoading]="isSubmitting">
+    <form
+      [formGroup]="authForm"
+      [appLoading]="isSubmitting"
+      (keyup.enter)="onSignInClick()"
+    >
       <mat-form-field appearance="outline" fxFill>
         <mat-label>Email address</mat-label>
         <input type="text" formControlName="emailAddress" matInput />
