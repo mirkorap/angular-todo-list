@@ -18,9 +18,13 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
   watchAll(): Observable<NoteFailure | Note[]> {
     return this.auth.user.pipe(
       switchMap((firebaseUser) => {
+        if (!firebaseUser) {
+          return of([]);
+        }
+
         return this.firestore
           .collection('users')
-          .doc(firebaseUser?.uid)
+          .doc(firebaseUser.uid)
           .collection<Omit<INoteDto, 'id'>>('notes')
           .snapshotChanges()
           .pipe(
@@ -32,7 +36,7 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
           );
       }),
       catchError(() => {
-        return of(NoteFailure.SERVER_ERROR);
+        return of(NoteFailure.INSUFFICIENT_PERMISSIONS);
       })
     );
   }
