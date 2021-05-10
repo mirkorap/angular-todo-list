@@ -1,12 +1,12 @@
 import * as fromActions from '@note/store/actions/note.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
-import { NoteDto } from '@note/data-transfer-objects/note';
 import { NoteFailure } from '@note/failures/note-failure';
 import { NoteRepositoryService } from '@note/services/note-repository.service';
 import { TypedAction } from '@ngrx/store/src/models';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class NoteEffects {
@@ -15,53 +15,68 @@ export class NoteEffects {
     private noteRepository: NoteRepositoryService
   ) {}
 
-  loadAllNotes$ = createEffect(() =>
+  createNote$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fromActions.loadAllNotes),
-      switchMap(() => {
-        return this.noteRepository.watchAll().pipe(
-          map((failureOrNotes) => {
-            return this.dispatchFailureOrSuccess(
-              failureOrNotes,
-              fromActions.loadAllNotesFail,
-              fromActions.loadAllNotesSuccess
-            );
-          })
+      ofType(fromActions.createNote),
+      switchMap(async (action) => {
+        const failureOrNote = await this.noteRepository.create(
+          NoteDto.fromObject(action.note).toDomain()
+        );
+
+        return this.dispatchFailureOrSuccess(
+          failureOrNote,
+          fromActions.createNoteFail,
+          fromActions.createNoteSuccess
         );
       })
     )
   );
 
-  loadUncompletedNotes$ = createEffect(() =>
+  updateNote$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fromActions.loadUncompletedNotes),
-      switchMap(() => {
-        return this.noteRepository.watchUncompleted().pipe(
-          map((failureOrNotes) => {
-            return this.dispatchFailureOrSuccess(
-              failureOrNotes,
-              fromActions.loadUncompletedNotesFail,
-              fromActions.loadUncompletedNotesSuccess
-            );
-          })
+      ofType(fromActions.updateNote),
+      switchMap(async (action) => {
+        const failureOrNote = await this.noteRepository.update(
+          NoteDto.fromObject(action.note).toDomain()
+        );
+
+        return this.dispatchFailureOrSuccess(
+          failureOrNote,
+          fromActions.updateNoteFail,
+          fromActions.updateNoteSuccess
+        );
+      })
+    )
+  );
+
+  deleteNote$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.deleteNote),
+      switchMap(async (action) => {
+        const failureOrNote = await this.noteRepository.delete(
+          NoteDto.fromObject(action.note).toDomain()
+        );
+
+        return this.dispatchFailureOrSuccess(
+          failureOrNote,
+          fromActions.deleteNoteFail,
+          fromActions.deleteNoteSuccess
         );
       })
     )
   );
 
   private dispatchFailureOrSuccess(
-    failureOrNotes: NoteFailure | Note[],
-    failureAction: fromActions.failureActionType,
-    successAction: fromActions.successActionType
+    failureOrNote: NoteFailure | Note,
+    failureAction: (props: { failure: NoteFailure }) => TypedAction<string>,
+    successAction: (props: { note: INoteDto }) => TypedAction<string>
   ): TypedAction<string> {
-    if (Array.isArray(failureOrNotes)) {
-      const notes = failureOrNotes.map((note) =>
-        NoteDto.fromDomain(note).toObject()
-      );
-
-      return successAction({ notes });
+    if (failureOrNote instanceof Note) {
+      return successAction({
+        note: NoteDto.fromDomain(failureOrNote).toObject()
+      });
     }
 
-    return failureAction({ failure: failureOrNotes });
+    return failureAction({ failure: failureOrNote });
   }
 }

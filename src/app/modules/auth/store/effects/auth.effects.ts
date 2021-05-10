@@ -1,5 +1,6 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { IUserDto, UserDto } from '@auth/data-transfer-objects/user';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthService } from '@auth/services/auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
@@ -7,7 +8,6 @@ import { Injectable } from '@angular/core';
 import { Password } from '@auth/value-objects/password';
 import { TypedAction } from '@ngrx/store/src/models';
 import { User } from '@auth/entities/user';
-import { UserDto } from '@auth/data-transfer-objects/user';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable()
@@ -78,8 +78,8 @@ export class AuthEffects {
 
   private dispatchFailureOrSuccess(
     failureOrUser: AuthFailure | User,
-    failureAction: fromActions.failureActionType,
-    successAction: fromActions.successActionType
+    failureAction: (props: { failure: AuthFailure }) => TypedAction<string>,
+    successAction: (props: { user: IUserDto }) => TypedAction<string>
   ): TypedAction<string> {
     if (failureOrUser instanceof User) {
       return successAction({

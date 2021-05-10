@@ -1,0 +1,22 @@
+<mat-card [style.backgroundColor]="note.color.value">
+  <mat-card-content>
+    <p>{{ note.body.value }}</p>
+
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex>
+        <mat-checkbox
+          *ngFor="let todo of note.todos.value"
+          class="mr-2"
+          [checked]="todo.done"
+          (change)="onTodoChange(todo)"
+        >
+          {{ todo.name.value }}
+        </mat-checkbox>
+      </div>
+
+      <button mat-icon-button color="warn" (click)="onDeleteClick()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

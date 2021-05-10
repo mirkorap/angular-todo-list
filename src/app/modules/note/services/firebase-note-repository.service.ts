@@ -1,6 +1,6 @@
 import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
@@ -18,81 +18,78 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
   watchAll(): Observable<NoteFailure | Note[]> {
     return this.auth.user.pipe(
       switchMap((firebaseUser) => {
+        if (!firebaseUser) {
+          return of([]);
+        }
+
         return this.firestore
           .collection('users')
-          .doc(firebaseUser?.uid)
+          .doc(firebaseUser.uid)
           .collection<Omit<INoteDto, 'id'>>('notes')
           .snapshotChanges()
           .pipe(
-            map((noteDocs) =>
-              noteDocs.map((noteDoc) =>
+            map((noteDocs) => {
+              return noteDocs.map((noteDoc) =>
                 NoteDto.fromFirebase(noteDoc.payload.doc).toDomain()
-              )
-            )
+              );
+            })
           );
       }),
       catchError(() => {
-        return of(NoteFailure.SERVER_ERROR);
+        return of(NoteFailure.INSUFFICIENT_PERMISSIONS);
       })
     );
   }
 
   watchUncompleted(): Observable<NoteFailure | Note[]> {
-    return this.auth.user.pipe(
-      switchMap((firebaseUser) => {
-        return this.firestore
-          .collection('users')
-          .doc(firebaseUser?.uid)
-          .collection<Omit<INoteDto, 'id'>>('notes')
-          .snapshotChanges()
-          .pipe(
-            map((noteDocs) =>
-              noteDocs.map((noteDoc) =>
-                NoteDto.fromFirebase(noteDoc.payload.doc).toDomain()
-              )
-            ),
-            filter((notes) => notes.some((note) => note.isUncompleted()))
-          );
-      }),
-      catchError(() => {
-        return of(NoteFailure.SERVER_ERROR);
+    return this.watchAll().pipe(
+      map((failureOrNotes) => {
+        if (Array.isArray(failureOrNotes)) {
+          return failureOrNotes.filter((note) => note.isUncompleted());
+        }
+
+        return failureOrNotes;
       })
     );
   }
 
-  async create(note: Note): Promise<NoteFailure | void> {
+  async create(note: Note): Promise<NoteFailure | Note> {
     try {
       const firebaseUser = await this.auth.currentUser;
-      const noteDto = NoteDto.fromDomain(note);
+      const { id, ...noteDto } = NoteDto.fromDomain(note).toObject();
 
       await this.firestore
         .collection('users')
         .doc(firebaseUser?.uid)
         .collection('notes')
-        .doc(noteDto.id)
+        .doc(id)
         .set(noteDto);
     } catch (error) {
       return NoteFailure.SERVER_ERROR;
     }
+
+    return note;
   }
 
-  async update(note: Note): Promise<NoteFailure | void> {
+  async update(note: Note): Promise<NoteFailure | Note> {
     try {
       const firebaseUser = await this.auth.currentUser;
-      const noteDto = NoteDto.fromDomain(note);
+      const { id, ...noteDto } = NoteDto.fromDomain(note).toObject();
 
       await this.firestore
         .collection('users')
         .doc(firebaseUser?.uid)
         .collection('notes')
-        .doc(noteDto.id)
+        .doc(id)
         .update(noteDto);
     } catch (error) {
       return NoteFailure.SERVER_ERROR;
     }
+
+    return note;
   }
 
-  async delete(note: Note): Promise<NoteFailure | void> {
+  async delete(note: Note): Promise<NoteFailure | Note> {
     try {
       const firebaseUser = await this.auth.currentUser;
 
@@ -105,5 +102,7 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
     } catch (error) {
       return NoteFailure.SERVER_ERROR;
     }
+
+    return note;
   }
 }

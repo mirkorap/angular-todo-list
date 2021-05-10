@@ -27,6 +27,10 @@ export class TodoItemDto implements ITodoItemDto {
     );
   }
 
+  static fromObject(todoItem: ITodoItemDto): TodoItemDto {
+    return new TodoItemDto(todoItem.id, todoItem.name, todoItem.done);
+  }
+
   toDomain(): TodoItem {
     return new TodoItem(
       new UniqueId(this.id),

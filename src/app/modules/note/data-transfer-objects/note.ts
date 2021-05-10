@@ -51,12 +51,7 @@ export class NoteDto implements INoteDto {
   }
 
   toObject(): INoteDto {
-    return {
-      id: this.id,
-      body: this.body,
-      color: this.color,
-      todos: this.todos
-    };
+    return JSON.parse(JSON.stringify(this));
   }
 
   toDomain(): Note {
@@ -65,7 +60,7 @@ export class NoteDto implements INoteDto {
       new NoteBody(this.body),
       new NoteColor(this.color),
       new LimitedList(
-        this.todos.map((todo) => (todo as TodoItemDto).toDomain()),
+        this.todos.map((todo) => TodoItemDto.fromObject(todo).toDomain()),
         Note.MAX_TODOS_NUMBER
       )
     );

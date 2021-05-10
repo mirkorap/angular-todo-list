@@ -9,9 +9,9 @@ export abstract class NoteRepositoryService {
 
   abstract watchUncompleted(): Observable<NoteFailure | Note[]>;
 
-  abstract create(note: Note): Promise<NoteFailure | void>;
+  abstract create(note: Note): Promise<NoteFailure | Note>;
 
-  abstract update(note: Note): Promise<NoteFailure | void>;
+  abstract update(note: Note): Promise<NoteFailure | Note>;
 
-  abstract delete(note: Note): Promise<NoteFailure | void>;
+  abstract delete(note: Note): Promise<NoteFailure | Note>;
 }
