@@ -6,13 +6,18 @@ import { AuthService } from '@auth/services/auth.service';
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Password } from '@auth/value-objects/password';
+import { Router } from '@angular/router';
 import { TypedAction } from '@ngrx/store/src/models';
 import { User } from '@auth/entities/user';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   registerWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
@@ -70,6 +75,7 @@ export class AuthEffects {
       ofType(fromActions.signOut),
       switchMap(async () => {
         await this.authService.signOut();
+        this.router.navigateByUrl('/auth');
 
         return fromActions.signOutSuccess();
       })
