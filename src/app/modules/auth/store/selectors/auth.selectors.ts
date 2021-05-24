@@ -25,4 +25,7 @@ export const isSubmitting = createSelector(
   (state) => state.isSubmitting
 );
 
-export const isSignedIn = createSelector(selectUser, (user) => !!user.id);
+export const isSignedIn = createSelector(
+  selectAuthState,
+  (state) => state.isSignedIn
+);

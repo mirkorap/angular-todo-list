@@ -7,12 +7,14 @@ export interface AuthState {
   user: IUserDto | Record<string, never>;
   failure: AuthFailure | null;
   isSubmitting: boolean;
+  isSignedIn: boolean;
 }
 
 export const initialState: AuthState = {
   user: {},
   failure: null,
-  isSubmitting: false
+  isSubmitting: false,
+  isSignedIn: false
 };
 
 export const authFeatureKey = 'auth';
@@ -37,7 +39,8 @@ export const authReducer = createReducer(
     (state, action) => ({
       ...state,
       user: action.user,
-      isSubmitting: false
+      isSubmitting: false,
+      isSignedIn: true
     })
   ),
   on(
@@ -48,7 +51,8 @@ export const authReducer = createReducer(
     (state, action) => ({
       ...state,
       failure: action.failure,
-      isSubmitting: false
+      isSubmitting: false,
+      isSignedIn: false
     })
   ),
   on(fromActions.signOutSuccess, () => ({
