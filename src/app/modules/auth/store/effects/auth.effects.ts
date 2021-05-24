@@ -23,10 +23,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(fromActions.registerWithEmailAndPassword),
       switchMap(async (action) => {
-        const failureOrUser = await this.authService.registerWithEmailAndPassword(
-          new EmailAddress(action.emailAddress),
-          new Password(action.password)
-        );
+        const failureOrUser =
+          await this.authService.registerWithEmailAndPassword(
+            new EmailAddress(action.emailAddress),
+            new Password(action.password)
+          );
 
         return this.dispatchFailureOrSuccess(
           failureOrUser,
