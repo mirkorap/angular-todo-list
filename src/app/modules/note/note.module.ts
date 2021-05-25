@@ -6,6 +6,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { NoteCardComponent } from './components/note-card/note-card.component';
+import { NoteExistsGuard } from './guards/note-exists.guard';
 import { NoteOverviewPageComponent } from './pages/note-overview-page/note-overview-page.component';
 import { NoteRoutingModule } from './note-routing.module';
 import { SharedModule } from '@shared/shared.module';
@@ -27,6 +28,7 @@ import { environment } from '@environments/environment';
     AngularFirestoreModule
   ],
   providers: [
+    NoteExistsGuard,
     {
       provide: fromServices.NoteRepositoryService,
       useClass: fromServices.FirebaseNoteRepositoryService

@@ -1,3 +1,4 @@
+import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
 import { Observable } from 'rxjs';
@@ -5,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export abstract class NoteStoreFacadeService {
   abstract notes$: Observable<Note[]>;
+  abstract noteEntities$: Observable<Dictionary<Note>>;
   abstract failureMessage$: Observable<string>;
   abstract isLoading$: Observable<boolean>;
   abstract isLoaded$: Observable<boolean>;
@@ -12,6 +14,10 @@ export abstract class NoteStoreFacadeService {
   abstract loadAllNotes(): void;
 
   abstract loadUncompletedNotes(): void;
+
+  abstract selectNote(id: string): Observable<Note>;
+
+  abstract hasNote(id: string): Observable<boolean>;
 
   abstract createNote(note: Note): void;
 
