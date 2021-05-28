@@ -1,0 +1,10 @@
+<mat-button-toggle-group>
+  <mat-button-toggle
+    *ngFor="let color of colors"
+    [value]="color"
+    [checked]="color === selected"
+    [disabled]="disabled"
+    [style.backgroundColor]="color"
+    (change)="onColorChange($event)"
+  ></mat-button-toggle>
+</mat-button-toggle-group>
