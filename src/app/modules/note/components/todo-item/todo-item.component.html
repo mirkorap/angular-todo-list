@@ -1,0 +1,19 @@
+<mat-list-item>
+  <mat-checkbox [checked]="todo.done"></mat-checkbox>
+  <mat-form-field fxFlex>
+    <input
+      #name
+      type="text"
+      placeholder="Name"
+      matInput
+      [value]="todo.name.value"
+      [maxLength]="nameMaxLength"
+    />
+    <mat-hint align="end">
+      {{ name.value?.length || 0 }} / {{ nameMaxLength }}
+    </mat-hint>
+  </mat-form-field>
+  <button mat-icon-button color="primary" (click)="onAddClick()">
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-list-item>

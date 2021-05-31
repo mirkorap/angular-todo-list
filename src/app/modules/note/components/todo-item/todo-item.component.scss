@@ -1,0 +1,12 @@
+::ng-deep {
+  .mat-list-item-content {
+    .mat-form-field {
+      padding: 0 30px;
+    }
+
+    .mat-checkbox-inner-container {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
