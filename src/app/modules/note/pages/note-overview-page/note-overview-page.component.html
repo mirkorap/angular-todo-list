@@ -23,8 +23,13 @@
       *ngFor="let note of noteStoreFacade.notes$ | async"
       class="mb-5"
       [note]="note"
+      (noteClick)="onNoteClick($event)"
       (noteChange)="onNoteChange($event)"
       (noteDelete)="onNoteDelete($event)"
     ></app-note-card>
+
+    <button mat-flat-button color="primary" (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>

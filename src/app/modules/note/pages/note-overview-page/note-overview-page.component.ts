@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services/note-store-facade.service';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -12,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 export class NoteOverviewPageComponent implements OnInit {
   constructor(
     public noteStoreFacade: NoteStoreFacadeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   // TODO: move these logic to facade? See RxJS blog posts
@@ -32,6 +34,10 @@ export class NoteOverviewPageComponent implements OnInit {
     return this.noteStoreFacade.loadAllNotes();
   }
 
+  onNoteClick(note: Note): void {
+    this.router.navigateByUrl(`/notes/${note.id.value}`);
+  }
+
   onNoteChange(note: Note): void {
     this.noteStoreFacade.updateNote(note);
   }
@@ -39,5 +45,9 @@ export class NoteOverviewPageComponent implements OnInit {
   onNoteDelete(note: Note): void {
     const confirmed = confirm('Are you sure you want to delete this note?');
     confirmed && this.noteStoreFacade.deleteNote(note);
+  }
+
+  onAddClick(): void {
+    this.router.navigateByUrl('/notes/new');
   }
 }

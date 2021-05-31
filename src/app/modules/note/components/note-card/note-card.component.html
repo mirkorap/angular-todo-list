@@ -1,6 +1,6 @@
 <mat-card [style.backgroundColor]="note.color.value">
   <mat-card-content>
-    <p>{{ note.body.value }}</p>
+    <p class="cursor-pointer" (click)="onBodyClick()">{{ note.body.value }}</p>
 
     <div fxLayout="row" fxLayoutAlign="start center">
       <div fxFlex>
