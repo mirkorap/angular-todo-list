@@ -13,7 +13,14 @@
       {{ name.value?.length || 0 }} / {{ nameMaxLength }}
     </mat-hint>
   </mat-form-field>
-  <button mat-icon-button color="primary" (click)="onAddClick()">
-    <mat-icon>add</mat-icon>
-  </button>
+
+  <div fxLayout="row">
+    <button mat-icon-button color="primary" (click)="onRemoveClick()">
+      <mat-icon>remove</mat-icon>
+    </button>
+
+    <button mat-icon-button color="primary" (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 </mat-list-item>
