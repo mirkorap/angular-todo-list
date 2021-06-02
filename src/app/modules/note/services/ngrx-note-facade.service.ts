@@ -1,10 +1,10 @@
 import * as fromStore from '@note/store';
+import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
 import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
-import { NoteDto } from '@note/data-transfer-objects/note';
 import { NoteStoreFacadeService } from './note-store-facade.service';
 import { Store } from '@ngrx/store';
 
@@ -21,9 +21,9 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
     this.store.select(fromStore.selectNoteIds)
   ]).pipe(
     switchMap(([entities, ids]) => {
-      return ids.map((id: string | number) => {
-        const entity = entities[id];
-        return entity ? { [id]: NoteDto.fromObject(entity).toDomain() } : {};
+      return (ids as string[]).map((id) => {
+        const entity = entities[id] as INoteDto;
+        return { [id]: NoteDto.fromObject(entity).toDomain() };
       });
     })
   );
