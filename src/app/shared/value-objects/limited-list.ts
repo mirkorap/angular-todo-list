@@ -14,4 +14,8 @@ export class LimitedList<T> extends ValueObject<T[]> {
 
     this._value = valueList;
   }
+
+  static empty<T>(maxLength: number): LimitedList<T> {
+    return new LimitedList([], maxLength);
+  }
 }
