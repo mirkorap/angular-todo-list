@@ -50,6 +50,14 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
     this.store.dispatch(fromStore.loadUncompletedNotes());
   }
 
+  selectNoteOrCreate(id: string): Observable<Note> {
+    return this.hasNote(id).pipe(
+      switchMap((hasNote) => {
+        return hasNote ? this.selectNote(id) : Note.empty().asObservable();
+      })
+    );
+  }
+
   selectNote(id: string): Observable<Note> {
     return this.noteEntities$.pipe(
       switchMap((entities) => of(entities[id])),

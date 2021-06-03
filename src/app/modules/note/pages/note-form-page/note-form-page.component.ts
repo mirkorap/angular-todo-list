@@ -25,7 +25,7 @@ export class NoteFormPageComponent implements OnInit {
 
   private selectNoteFromRoute(): Observable<Note> {
     return this.route.params.pipe(
-      switchMap((params) => this.noteStoreFacade.selectNote(params.id))
+      switchMap((params) => this.noteStoreFacade.selectNoteOrCreate(params.id))
     );
   }
 }
