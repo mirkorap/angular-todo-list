@@ -1,0 +1,10 @@
+<div
+  *ngIf="(note$ | async)! as note"
+  class="container container--full"
+  fxLayout="row"
+  fxLayoutAlign="center"
+>
+  <div fxLayout="column" fxFlex.gt-xs="50">
+    <app-note-form [note]="note"></app-note-form>
+  </div>
+</div>
