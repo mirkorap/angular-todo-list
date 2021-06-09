@@ -9,6 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { NoteExistsGuard } from './guards/note-exists.guard';
 import { NoteRoutingModule } from './note-routing.module';
+import { NoteStateResolver } from './resolvers/note-state.resolver';
 import { SharedModule } from '@shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { environment } from '@environments/environment';
@@ -35,6 +36,7 @@ import { environment } from '@environments/environment';
   ],
   providers: [
     NoteExistsGuard,
+    NoteStateResolver,
     {
       provide: fromServices.NoteRepositoryService,
       useClass: fromServices.FirebaseNoteRepositoryService
