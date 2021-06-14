@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Note } from '@note/entities/note';
 import { NoteBody } from '@note/value-objects/note-body';
 import { NoteColor } from '@note/value-objects/note-color';
+import { TodoItem } from '@note/entities/todo-item';
 
 @Component({
   selector: 'app-note-form',
@@ -26,6 +27,14 @@ export class NoteFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initNoteForm();
+  }
+
+  onTodoAdd(): void {
+    this.note.addTodo(TodoItem.empty());
+  }
+
+  onTodoRemove(todo: TodoItem): void {
+    this.note.removeTodo(todo);
   }
 
   private initNoteForm(): void {

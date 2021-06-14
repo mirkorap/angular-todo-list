@@ -29,11 +29,21 @@
         <app-todo-item
           *ngFor="let todo of note.todos.value"
           [todo]="todo"
+          (todoRemove)="onTodoRemove($event)"
         ></app-todo-item>
       </mat-list>
     </div>
 
-    <div fxLayout="row">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <button
+        type="button"
+        color="accent"
+        mat-raised-button
+        (click)="onTodoAdd()"
+      >
+        {{ 'Add Todo' | uppercase }}
+      </button>
+
       <button type="button" color="primary" mat-raised-button>
         {{ 'Save' | uppercase }}
       </button>
