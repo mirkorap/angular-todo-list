@@ -43,11 +43,19 @@ export class Note extends Entity {
     return !this.isCompleted();
   }
 
-  updateTodo(todo: TodoItem): void {
-    const todos = this.todos.value.map((item) => {
-      return item.id === todo.id ? todo : item;
-    });
+  addTodo(todo: TodoItem): void {
+    this.todos = this.todos.add(todo);
+  }
 
-    this.todos = new LimitedList(todos, Note.MAX_TODOS_NUMBER);
+  updateTodo(todo: TodoItem): void {
+    this.todos = this.todos.update(todo);
+  }
+
+  removeTodo(todo: TodoItem): void {
+    this.todos = this.todos.remove(todo);
+  }
+
+  equalsTo(objectToCompare: this): boolean {
+    return this.id.equalsTo(objectToCompare.id);
   }
 }
