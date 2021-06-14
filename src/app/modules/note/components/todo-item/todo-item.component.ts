@@ -17,15 +17,10 @@ import { TodoName } from '@note/value-objects/todo-name';
 export class TodoItemComponent {
   @Input() todo!: TodoItem;
   @Output() todoRemove = new EventEmitter<TodoItem>();
-  @Output() todoAdd = new EventEmitter<void>();
 
   nameMaxLength = TodoName.MAX_LENGTH;
 
   onRemoveClick(): void {
     this.todoRemove.emit(this.todo);
-  }
-
-  onAddClick(): void {
-    this.todoAdd.emit();
   }
 }
