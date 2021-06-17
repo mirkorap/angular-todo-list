@@ -31,7 +31,7 @@ type OnTouched = () => void;
 })
 export class TodoItemComponent implements ControlValueAccessor {
   @Input() todo!: TodoItem;
-  @Output() todoRemove = new EventEmitter<TodoItem>();
+  @Output() todoRemove = new EventEmitter<void>();
 
   nameMaxLength = TodoName.MAX_LENGTH;
   touched = false;
@@ -81,6 +81,6 @@ export class TodoItemComponent implements ControlValueAccessor {
   }
 
   onRemoveClick(): void {
-    this.todoRemove.emit(this.todo);
+    this.todoRemove.emit();
   }
 }

@@ -26,11 +26,13 @@
     <div fxLayout="column">
       <h2>Todos</h2>
       <mat-list fxFlex>
-        <app-todo-item
-          *ngFor="let todo of note.todos.value"
-          [todo]="todo"
-          (todoRemove)="onTodoRemove($event)"
-        ></app-todo-item>
+        <ng-container *ngFor="let control of todosCtrl.controls; index as i">
+          <app-todo-item
+            [todo]="control.value"
+            [formControl]="findTodoCtrlElementAt(i)"
+            (todoRemove)="onTodoRemove(i)"
+          ></app-todo-item>
+        </ng-container>
       </mat-list>
     </div>
 
@@ -44,7 +46,7 @@
         {{ 'Add Todo' | uppercase }}
       </button>
 
-      <button type="button" color="primary" mat-raised-button>
+      <button type="submit" color="primary" mat-raised-button>
         {{ 'Save' | uppercase }}
       </button>
     </div>
