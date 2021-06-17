@@ -1,5 +1,9 @@
 <mat-list-item>
-  <mat-checkbox [checked]="todo.done"></mat-checkbox>
+  <mat-checkbox
+    [checked]="todo.done"
+    [disabled]="disabled"
+    (change)="onDoneChange($event)"
+  ></mat-checkbox>
   <mat-form-field fxFlex>
     <input
       #name
@@ -8,6 +12,8 @@
       matInput
       [value]="todo.name.value"
       [maxLength]="nameMaxLength"
+      [disabled]="disabled"
+      (input)="onNameInput($event)"
     />
     <mat-hint align="end">
       {{ name.value?.length || 0 }} / {{ nameMaxLength }}
@@ -15,7 +21,12 @@
   </mat-form-field>
 
   <div fxLayout="row">
-    <button mat-icon-button color="warn" (click)="onRemoveClick()">
+    <button
+      mat-icon-button
+      color="warn"
+      [disabled]="disabled"
+      (click)="onRemoveClick()"
+    >
       <mat-icon>remove_circle</mat-icon>
     </button>
   </div>
