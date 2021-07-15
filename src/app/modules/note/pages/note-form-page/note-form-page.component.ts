@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -16,11 +17,20 @@ export class NoteFormPageComponent implements OnInit {
 
   constructor(
     private noteStoreFacade: NoteStoreFacadeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.noteStoreFacade.failureMessage$.subscribe((failureMessage) =>
+      this.toastr.error(failureMessage)
+    );
+
     this.note$ = this.selectNoteFromRoute();
+  }
+
+  onSave(note: Note): void {
+    this.noteStoreFacade.upsertNote(note);
   }
 
   private selectNoteFromRoute(): Observable<Note> {

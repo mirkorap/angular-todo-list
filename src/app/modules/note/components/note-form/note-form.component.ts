@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
-  OnInit
+  OnInit,
+  Output
 } from '@angular/core';
 import {
   FormArray,
@@ -11,10 +13,12 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { LimitedList } from '@shared/value-objects/limited-list';
 import { Note } from '@note/entities/note';
 import { NoteBody } from '@note/value-objects/note-body';
 import { NoteColor } from '@note/value-objects/note-color';
 import { TodoItem } from '@note/entities/todo-item';
+import { UniqueId } from '@shared/value-objects/uuid';
 
 @Component({
   selector: 'app-note-form',
@@ -24,6 +28,7 @@ import { TodoItem } from '@note/entities/todo-item';
 })
 export class NoteFormComponent implements OnInit {
   @Input() note!: Note;
+  @Output() save = new EventEmitter<Note>();
 
   bodyMaxLength = NoteBody.MAX_LENGTH;
   colors = NoteColor.PREDEFINED_COLORS;
@@ -52,8 +57,24 @@ export class NoteFormComponent implements OnInit {
     this.todosCtrl.removeAt(index);
   }
 
+  submit(): void {
+    if (this.noteForm.invalid) {
+      return this.noteForm.markAllAsTouched();
+    }
+
+    const note = this.note.copyWith({
+      id: new UniqueId(this.noteForm.value.id),
+      body: new NoteBody(this.noteForm.value.body),
+      color: new NoteColor(this.noteForm.value.color),
+      todos: new LimitedList(this.noteForm.value.todos, Note.MAX_TODOS_NUMBER)
+    });
+
+    this.save.emit(note);
+  }
+
   private initNoteForm(): void {
     this.noteForm = this.fb.group({
+      id: this.fb.control(this.note.id.value),
       body: this.fb.control(this.note.body.value, [
         Validators.required,
         Validators.maxLength(NoteBody.MAX_LENGTH)
