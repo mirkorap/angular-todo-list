@@ -89,4 +89,14 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
       fromStore.deleteNote({ note: NoteDto.fromDomain(note).toObject() })
     );
   }
+
+  upsertNote(note: Note): void {
+    this.hasNote(note.id.value).subscribe((hasNote) => {
+      if (hasNote) {
+        return this.updateNote(note);
+      }
+
+      return this.createNote(note);
+    });
+  }
 }

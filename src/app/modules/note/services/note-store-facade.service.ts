@@ -26,4 +26,6 @@ export abstract class NoteStoreFacadeService {
   abstract updateNote(note: Note): void;
 
   abstract deleteNote(note: Note): void;
+
+  abstract upsertNote(note: Note): void;
 }
