@@ -13,8 +13,6 @@ export abstract class NoteStoreFacadeService {
 
   abstract loadAllNotes(): void;
 
-  abstract loadUncompletedNotes(): void;
-
   abstract selectNoteOrCreate(id: string): Observable<Note>;
 
   abstract selectNote(id: string): Observable<Note>;

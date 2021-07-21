@@ -11,22 +11,21 @@
       fxLayoutAlign="center"
       fxLayoutAlign.gt-xs="end"
     >
-      <mat-checkbox
-        color="primary"
-        (change)="onUncompletedFilterChange($event.checked)"
-      >
+      <mat-checkbox color="primary" [(ngModel)]="uncompletedFilter">
         Filter by uncompleted
       </mat-checkbox>
     </div>
 
-    <app-note-card
-      *ngFor="let note of noteStoreFacade.notes$ | async"
-      class="mb-5"
-      [note]="note"
-      (noteClick)="onNoteClick($event)"
-      (noteChange)="onNoteChange($event)"
-      (noteDelete)="onNoteDelete($event)"
-    ></app-note-card>
+    <ng-container *ngFor="let note of noteStoreFacade.notes$ | async">
+      <app-note-card
+        *ngIf="canShowNote(note)"
+        class="mb-5"
+        [note]="note"
+        (noteClick)="onNoteClick($event)"
+        (noteChange)="onNoteChange($event)"
+        (noteDelete)="onNoteDelete($event)"
+      ></app-note-card>
+    </ng-container>
 
     <button mat-flat-button color="primary" (click)="onAddClick()">
       <mat-icon>add</mat-icon>

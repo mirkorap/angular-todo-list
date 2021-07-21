@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteOverviewPageComponent implements OnInit {
+  uncompletedFilter = false;
+
   constructor(
     public noteStoreFacade: NoteStoreFacadeService,
     private toastr: ToastrService,
@@ -26,12 +28,12 @@ export class NoteOverviewPageComponent implements OnInit {
     );
   }
 
-  onUncompletedFilterChange(checked: boolean): void {
-    if (checked) {
-      return this.noteStoreFacade.loadUncompletedNotes();
+  canShowNote(note: Note): boolean {
+    if (!this.uncompletedFilter) {
+      return true;
     }
 
-    return this.noteStoreFacade.loadAllNotes();
+    return note.isUncompleted();
   }
 
   onNoteClick(note: Note): void {

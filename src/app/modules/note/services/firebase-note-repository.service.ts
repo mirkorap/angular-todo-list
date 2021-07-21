@@ -41,18 +41,6 @@ export class FirebaseNoteRepositoryService implements NoteRepositoryService {
     );
   }
 
-  watchUncompleted(): Observable<NoteFailure | Note[]> {
-    return this.watchAll().pipe(
-      map((failureOrNotes) => {
-        if (Array.isArray(failureOrNotes)) {
-          return failureOrNotes.filter((note) => note.isUncompleted());
-        }
-
-        return failureOrNotes;
-      })
-    );
-  }
-
   async create(note: Note): Promise<NoteFailure | Note> {
     try {
       const firebaseUser = await this.auth.currentUser;

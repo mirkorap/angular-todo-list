@@ -7,8 +7,6 @@ import { Observable } from 'rxjs';
 export abstract class NoteRepositoryService {
   abstract watchAll(): Observable<NoteFailure | Note[]>;
 
-  abstract watchUncompleted(): Observable<NoteFailure | Note[]>;
-
   abstract create(note: Note): Promise<NoteFailure | Note>;
 
   abstract update(note: Note): Promise<NoteFailure | Note>;

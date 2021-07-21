@@ -32,23 +32,6 @@ export class NoteOverviewEffects {
     )
   );
 
-  loadUncompletedNotes$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromActions.loadUncompletedNotes),
-      switchMap(() => {
-        return this.noteRepository.watchUncompleted().pipe(
-          map((failureOrNotes) => {
-            return this.dispatchFailureOrSuccess(
-              failureOrNotes,
-              fromActions.loadUncompletedNotesFail,
-              fromActions.loadUncompletedNotesSuccess
-            );
-          })
-        );
-      })
-    )
-  );
-
   private dispatchFailureOrSuccess(
     failureOrNotes: NoteFailure | Note[],
     failureAction: (props: { failure: NoteFailure }) => TypedAction<string>,
