@@ -1,0 +1,33 @@
+<mat-list-item>
+  <mat-checkbox
+    [checked]="todo.done"
+    [disabled]="disabled"
+    (change)="onDoneChange($event)"
+  ></mat-checkbox>
+  <mat-form-field fxFlex>
+    <input
+      #name
+      type="text"
+      placeholder="Name"
+      matInput
+      [value]="todo.name.value"
+      [maxLength]="nameMaxLength"
+      [disabled]="disabled"
+      (input)="onNameInput($event)"
+    />
+    <mat-hint align="end">
+      {{ name.value?.length || 0 }} / {{ nameMaxLength }}
+    </mat-hint>
+  </mat-form-field>
+
+  <div fxLayout="row">
+    <button
+      mat-icon-button
+      color="warn"
+      [disabled]="disabled"
+      (click)="onRemoveClick()"
+    >
+      <mat-icon>remove_circle</mat-icon>
+    </button>
+  </div>
+</mat-list-item>

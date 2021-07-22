@@ -1,0 +1,31 @@
+:host {
+  width: 100%;
+
+  .mat-button-toggle-group {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+::ng-deep {
+  .mat-button-toggle-group {
+    border: none;
+
+    .mat-button-toggle {
+      border-radius: 100%;
+
+      &.mat-button-toggle-checked {
+        border: 1px solid black;
+      }
+
+      .mat-button-toggle-button {
+        width: 35px;
+        height: 35px;
+      }
+
+      .mat-button-toggle-ripple {
+        border-radius: 100%;
+      }
+    }
+  }
+}

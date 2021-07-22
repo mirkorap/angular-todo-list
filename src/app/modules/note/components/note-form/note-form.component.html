@@ -1,0 +1,54 @@
+<form *ngIf="note" [formGroup]="noteForm" (ngSubmit)="submit()">
+  <div fxLayout="column" fxLayoutGap="2rem">
+    <div fxLayout="row">
+      <mat-form-field fxFlex>
+        <mat-label>Body</mat-label>
+        <textarea
+          #body
+          rows="4"
+          formControlName="body"
+          matInput
+          [maxLength]="bodyMaxLength"
+        ></textarea>
+        <mat-hint align="end">
+          {{ body.value?.length || 0 }} / {{ bodyMaxLength }}
+        </mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <app-color-picker
+        formControlName="color"
+        [colors]="colors"
+      ></app-color-picker>
+    </div>
+
+    <div fxLayout="column">
+      <h2>Todos</h2>
+      <mat-list fxFlex>
+        <ng-container *ngFor="let control of todosCtrl.controls; index as i">
+          <app-todo-item
+            [todo]="control.value"
+            [formControl]="findTodoCtrlElementAt(i)"
+            (todoRemove)="onTodoRemove(i)"
+          ></app-todo-item>
+        </ng-container>
+      </mat-list>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <button
+        type="button"
+        color="accent"
+        mat-raised-button
+        (click)="onTodoAdd()"
+      >
+        {{ 'Add Todo' | uppercase }}
+      </button>
+
+      <button type="submit" color="primary" mat-raised-button>
+        {{ 'Save' | uppercase }}
+      </button>
+    </div>
+  </div>
+</form>

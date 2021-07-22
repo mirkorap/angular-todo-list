@@ -14,11 +14,23 @@ export class TodoItem extends Entity {
     this.done = done;
   }
 
+  static empty(): TodoItem {
+    return new TodoItem(
+      UniqueId.generate(),
+      new TodoName('Put your description here...'),
+      false
+    );
+  }
+
   isCompleted(): boolean {
     return this.done;
   }
 
   isUncompleted(): boolean {
     return !this.isCompleted();
+  }
+
+  equalsTo(objectToCompare: this): boolean {
+    return this.id.equalsTo(objectToCompare.id);
   }
 }

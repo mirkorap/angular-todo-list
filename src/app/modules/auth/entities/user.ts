@@ -13,4 +13,8 @@ export class User extends Entity {
     this.emailAddress = emailAddress;
     this.displayName = displayName;
   }
+
+  equalsTo(objectToCompare: this): boolean {
+    return this.id.equalsTo(objectToCompare.id);
+  }
 }

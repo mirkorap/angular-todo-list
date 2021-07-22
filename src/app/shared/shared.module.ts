@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoadingDirective } from './directives/loading.directive';
@@ -8,7 +9,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [LoadingDirective],
+  declarations: [LoadingDirective, ColorPickerComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -28,7 +29,8 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule,
-    LoadingDirective
+    LoadingDirective,
+    ColorPickerComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

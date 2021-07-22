@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services/note-store-facade.service';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-note-overview-page',
   templateUrl: './note-overview-page.component.html',
@@ -10,26 +13,33 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteOverviewPageComponent implements OnInit {
+  uncompletedFilter = false;
+
   constructor(
     public noteStoreFacade: NoteStoreFacadeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
-    this.noteStoreFacade.loadAllNotes();
-
     this.noteStoreFacade.failureMessage$.subscribe((failureMessage) =>
       this.toastr.error(failureMessage)
     );
+
+    this.noteStoreFacade.loadAllNotes();
   }
 
-  onUncompletedFilterChange(checked: boolean): void {
-    if (checked) {
-      return this.noteStoreFacade.loadUncompletedNotes();
+  canShowNote(note: Note): boolean {
+    if (!this.uncompletedFilter) {
+      return true;
     }
 
-    return this.noteStoreFacade.loadAllNotes();
+    return note.isUncompleted();
+  }
+
+  onNoteClick(note: Note): void {
+    this.router.navigateByUrl(`/notes/${note.id.value}`);
   }
 
   onNoteChange(note: Note): void {
@@ -39,5 +49,9 @@ export class NoteOverviewPageComponent implements OnInit {
   onNoteDelete(note: Note): void {
     const confirmed = confirm('Are you sure you want to delete this note?');
     confirmed && this.noteStoreFacade.deleteNote(note);
+  }
+
+  onAddClick(): void {
+    this.router.navigateByUrl('/notes/new');
   }
 }

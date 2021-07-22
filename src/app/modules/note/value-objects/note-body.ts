@@ -7,7 +7,7 @@ import { ExceedingLength } from '@shared/errors/exceeding-length';
 import { ValueObject } from '@shared/value-objects/value-object';
 
 export class NoteBody extends ValueObject<string> {
-  private static MAX_LENGTH = 1000;
+  public static MAX_LENGTH = 1000;
 
   protected _value: string;
 

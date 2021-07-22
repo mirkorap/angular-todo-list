@@ -9,7 +9,7 @@ import { MultilineString } from '@shared/errors/multiline-string';
 import { ValueObject } from '@shared/value-objects/value-object';
 
 export class TodoName extends ValueObject<string> {
-  private static MAX_LENGTH = 30;
+  public static MAX_LENGTH = 30;
 
   protected _value: string;
 

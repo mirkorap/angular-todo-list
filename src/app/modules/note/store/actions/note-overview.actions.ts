@@ -14,18 +14,3 @@ export const loadAllNotesFail = createAction(
   '[Note Overview] Load All Notes Fail',
   props<{ failure: NoteFailure }>()
 );
-
-// LoadUncompletedNotes actions
-export const loadUncompletedNotes = createAction(
-  '[Note Overview] Load Uncompleted Notes'
-);
-
-export const loadUncompletedNotesSuccess = createAction(
-  '[Note Overview] Load Uncompleted Notes Success',
-  props<{ notes: INoteDto[] }>()
-);
-
-export const loadUncompletedNotesFail = createAction(
-  '[Note Overview] Load Uncompleted Notes Fail',
-  props<{ failure: NoteFailure }>()
-);

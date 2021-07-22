@@ -14,7 +14,8 @@ export function validateSingleLine(value: string): boolean {
 }
 
 export function validateEmailAddress(value: string): boolean {
-  const emailRegex = /^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
+  const emailRegex =
+    /^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+/;
   return emailRegex.test(value);
 }
 

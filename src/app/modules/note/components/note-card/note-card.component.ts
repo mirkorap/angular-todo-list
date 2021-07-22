@@ -17,8 +17,13 @@ import { TodoItem } from '@note/entities/todo-item';
 export class NoteCardComponent {
   @Input() note!: Note;
 
+  @Output() noteClick = new EventEmitter<Note>();
   @Output() noteChange = new EventEmitter<Note>();
   @Output() noteDelete = new EventEmitter<Note>();
+
+  onBodyClick(): void {
+    this.noteClick.emit(this.note);
+  }
 
   onTodoChange(todo: TodoItem): void {
     this.note.updateTodo(todo.copyWith({ done: !todo.done }));

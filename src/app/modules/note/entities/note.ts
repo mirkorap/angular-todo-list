@@ -6,7 +6,7 @@ import { TodoItem } from './todo-item';
 import { UniqueId } from '@shared/value-objects/uuid';
 
 export class Note extends Entity {
-  static MAX_TODOS_NUMBER = 3;
+  public static MAX_TODOS_NUMBER = 3;
 
   id: UniqueId;
   body: NoteBody;
@@ -26,6 +26,15 @@ export class Note extends Entity {
     this.todos = todos;
   }
 
+  static empty(): Note {
+    return new Note(
+      UniqueId.generate(),
+      new NoteBody('Put your description here...'),
+      new NoteColor(NoteColor.DEFAULT_COLOR),
+      LimitedList.empty(Note.MAX_TODOS_NUMBER)
+    );
+  }
+
   isCompleted(): boolean {
     return this.todos.value.every((todo) => todo.isCompleted());
   }
@@ -34,11 +43,19 @@ export class Note extends Entity {
     return !this.isCompleted();
   }
 
-  updateTodo(todo: TodoItem): void {
-    const todos = this.todos.value.map((item) => {
-      return item.id === todo.id ? todo : item;
-    });
+  addTodo(todo: TodoItem): void {
+    this.todos = this.todos.add(todo);
+  }
 
-    this.todos = new LimitedList(todos, Note.MAX_TODOS_NUMBER);
+  updateTodo(todo: TodoItem): void {
+    this.todos = this.todos.update(todo);
+  }
+
+  removeTodo(todo: TodoItem): void {
+    this.todos = this.todos.remove(todo);
+  }
+
+  equalsTo(objectToCompare: this): boolean {
+    return this.id.equalsTo(objectToCompare.id);
   }
 }

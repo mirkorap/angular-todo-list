@@ -22,25 +22,20 @@ export const noteFeatureKey = 'note';
 
 export const noteReducer = createReducer(
   initialState,
-  on(fromActions.loadAllNotes, fromActions.loadUncompletedNotes, (state) => ({
+  on(fromActions.loadAllNotes, (state) => ({
     ...state,
     isLoading: true
   })),
-  on(
-    fromActions.loadAllNotesSuccess,
-    fromActions.loadUncompletedNotesSuccess,
-    (state, action) => {
-      return adapter.setAll(action.notes, {
-        ...state,
-        failure: null,
-        isLoading: false,
-        isLoaded: true
-      });
-    }
-  ),
+  on(fromActions.loadAllNotesSuccess, (state, action) => {
+    return adapter.setAll(action.notes, {
+      ...state,
+      failure: null,
+      isLoading: false,
+      isLoaded: true
+    });
+  }),
   on(
     fromActions.loadAllNotesFail,
-    fromActions.loadUncompletedNotesFail,
     fromActions.createNoteFail,
     fromActions.updateNoteFail,
     fromActions.deleteNoteFail,
@@ -50,11 +45,5 @@ export const noteReducer = createReducer(
       isLoading: false,
       isLoaded: false
     })
-  ),
-  on(fromActions.createNoteSuccess, (state, action) => {
-    return adapter.addOne(action.note, state);
-  }),
-  on(fromActions.deleteNoteSuccess, (state, action) => {
-    return adapter.removeOne(action.note.id, state);
-  })
+  )
 );

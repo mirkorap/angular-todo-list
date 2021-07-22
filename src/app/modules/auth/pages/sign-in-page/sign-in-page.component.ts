@@ -5,13 +5,13 @@ import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-sign-in-page',
   templateUrl: './sign-in-page.component.html',
   styleUrls: ['./sign-in-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-@AutoUnsubscribe()
 export class SignInPageComponent implements OnInit {
   constructor(
     public authStoreFacade: AuthStoreFacadeService,
