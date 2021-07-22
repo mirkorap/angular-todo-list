@@ -25,5 +25,5 @@ export abstract class NoteStoreFacadeService {
 
   abstract deleteNote(note: Note): void;
 
-  abstract upsertNote(note: Note): void;
+  abstract upsertNote(note: Note): Observable<void>;
 }

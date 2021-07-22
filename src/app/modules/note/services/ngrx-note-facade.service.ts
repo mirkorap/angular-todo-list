@@ -86,13 +86,15 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
     );
   }
 
-  upsertNote(note: Note): void {
-    this.hasNote(note.id.value).subscribe((hasNote) => {
-      if (hasNote) {
-        return this.updateNote(note);
-      }
+  upsertNote(note: Note): Observable<void> {
+    return this.hasNote(note.id.value).pipe(
+      map((hasNote) => {
+        if (hasNote) {
+          return this.updateNote(note);
+        }
 
-      return this.createNote(note);
-    });
+        return this.createNote(note);
+      })
+    );
   }
 }
