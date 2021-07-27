@@ -1,5 +1,5 @@
 import { AuthService, AuthStoreFacadeService } from '@auth/services';
-import { CanActivate, Router } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { Injectable } from '@angular/core';
@@ -7,14 +7,14 @@ import { User } from '@auth/entities/user';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanLoad {
   constructor(
     private authService: AuthService,
     private authStoreFacade: AuthStoreFacadeService,
     private router: Router
   ) {}
 
-  canActivate(): Observable<boolean> {
+  canLoad(): Observable<boolean> {
     return this.authService.getCurrentUser().pipe(
       switchMap((failureOrUser) => {
         if (failureOrUser instanceof User) {

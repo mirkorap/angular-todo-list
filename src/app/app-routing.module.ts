@@ -5,17 +5,13 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => {
-      return import('./modules/auth/auth.module').then((m) => m.AuthModule);
-    },
+    loadChildren: () => import('@auth/auth.module').then((m) => m.AuthModule),
     canActivate: [fromAuthGuards.NotAuthGuard]
   },
   {
     path: 'notes',
-    loadChildren: () => {
-      return import('./modules/note/note.module').then((m) => m.NoteModule);
-    },
-    canActivate: [fromAuthGuards.AuthGuard]
+    loadChildren: () => import('@note/note.module').then((m) => m.NoteModule),
+    canLoad: [fromAuthGuards.AuthGuard]
   },
   {
     path: '**',
