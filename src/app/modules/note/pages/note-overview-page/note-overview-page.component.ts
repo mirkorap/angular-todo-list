@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services/note-store-facade.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-@AutoUnsubscribe()
+@UntilDestroy()
 @Component({
   selector: 'app-note-overview-page',
   templateUrl: './note-overview-page.component.html',
@@ -23,9 +23,9 @@ export class NoteOverviewPageComponent implements OnInit {
 
   // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
-    this.noteStoreFacade.failureMessage$.subscribe((failureMessage) =>
-      this.toastr.error(failureMessage)
-    );
+    this.noteStoreFacade.failureMessage$
+      .pipe(untilDestroyed(this))
+      .subscribe((failureMessage) => this.toastr.error(failureMessage));
 
     this.noteStoreFacade.loadAllNotes();
   }

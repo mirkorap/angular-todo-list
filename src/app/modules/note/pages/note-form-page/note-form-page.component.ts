@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
-import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs/operators';
 
-@AutoUnsubscribe()
+@UntilDestroy()
 @Component({
   selector: 'app-note-form-page',
   templateUrl: './note-form-page.component.html',
@@ -24,15 +24,18 @@ export class NoteFormPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.noteStoreFacade.failureMessage$.subscribe((failureMessage) =>
-      this.toastr.error(failureMessage)
-    );
+    this.noteStoreFacade.failureMessage$
+      .pipe(untilDestroyed(this))
+      .subscribe((failureMessage) => this.toastr.error(failureMessage));
 
     this.note$ = this.selectNoteFromRoute();
   }
 
   onSave(note: Note): void {
-    this.noteStoreFacade.upsertNote(note).subscribe();
+    this.noteStoreFacade
+      .upsertNote(note)
+      .pipe(untilDestroyed(this))
+      .subscribe();
   }
 
   private selectNoteFromRoute(): Observable<Note> {

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthStoreFacadeService } from '@auth/services/auth-store-facade.service';
-import { AutoUnsubscribe } from '@shared/decorators/auto-unsubscribe';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-@AutoUnsubscribe()
+@UntilDestroy()
 @Component({
   selector: 'app-sign-in-page',
   templateUrl: './sign-in-page.component.html',
@@ -21,13 +21,15 @@ export class SignInPageComponent implements OnInit {
 
   // TODO: move these logic to facade? See RxJS blog posts
   ngOnInit(): void {
-    this.authStoreFacade.failureMessage$.subscribe((failureMessage) =>
-      this.toastr.error(failureMessage)
-    );
+    this.authStoreFacade.failureMessage$
+      .pipe(untilDestroyed(this))
+      .subscribe((failureMessage) => this.toastr.error(failureMessage));
 
-    this.authStoreFacade.isSignedIn$.subscribe(
-      (isSignedIn) => isSignedIn && this.router.navigateByUrl('/notes')
-    );
+    this.authStoreFacade.isSignedIn$
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (isSignedIn) => isSignedIn && this.router.navigateByUrl('/notes')
+      );
   }
 
   onSignIn(credentials: ICredentialsDto): void {
