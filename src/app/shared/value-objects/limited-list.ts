@@ -19,7 +19,7 @@ export class LimitedList<T extends Equatable> extends ValueObject<T[]> {
   }
 
   static empty<T extends Equatable>(maxLength: number): LimitedList<T> {
-    return new LimitedList([], maxLength);
+    return new LimitedList<T>([], maxLength);
   }
 
   get maxLength(): number {
@@ -29,7 +29,7 @@ export class LimitedList<T extends Equatable> extends ValueObject<T[]> {
   add(valueToAdd: T): LimitedList<T> {
     const valueList = [...this.value, valueToAdd];
 
-    return new LimitedList(valueList, this.maxLength);
+    return new LimitedList<T>(valueList, this.maxLength);
   }
 
   update(valueToUpdate: T): LimitedList<T> {
@@ -37,7 +37,7 @@ export class LimitedList<T extends Equatable> extends ValueObject<T[]> {
       item.equalsTo(valueToUpdate) ? valueToUpdate : item
     );
 
-    return new LimitedList(valueList, this.maxLength);
+    return new LimitedList<T>(valueList, this.maxLength);
   }
 
   remove(valueToRemove: T): LimitedList<T> {
@@ -45,7 +45,7 @@ export class LimitedList<T extends Equatable> extends ValueObject<T[]> {
       (item) => !item.equalsTo(valueToRemove)
     );
 
-    return new LimitedList(valueList, this.maxLength);
+    return new LimitedList<T>(valueList, this.maxLength);
   }
 
   equalsTo(objectToCompare: this): boolean {
