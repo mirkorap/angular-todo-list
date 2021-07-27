@@ -15,14 +15,13 @@ import { environment } from '@environments/environment';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    MaterialModule,
-    AuthModule.forRoot(),
     EffectsModule.forRoot([]),
     StoreModule.forRoot({}),
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    MaterialModule,
+    AppRoutingModule,
+    AuthModule.forRoot()
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
