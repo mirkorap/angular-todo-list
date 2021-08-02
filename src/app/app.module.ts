@@ -20,7 +20,7 @@ import { environment } from '@environments/environment';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     MaterialModule,
     AppRoutingModule,
-    AuthModule.forRoot()
+    AuthModule
   ],
   bootstrap: [AppComponent]
 })

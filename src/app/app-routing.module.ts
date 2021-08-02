@@ -6,12 +6,12 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('@auth/auth.module').then((m) => m.AuthModule),
-    canActivate: [fromAuthGuards.NotAuthGuard]
+    canActivate: [fromAuthGuards.PublicAreaGuard]
   },
   {
     path: 'notes',
     loadChildren: () => import('@note/note.module').then((m) => m.NoteModule),
-    canLoad: [fromAuthGuards.AuthGuard]
+    canLoad: [fromAuthGuards.PrivateAreaGuard]
   },
   {
     path: '**',

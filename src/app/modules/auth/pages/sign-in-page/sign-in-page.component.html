@@ -5,8 +5,8 @@
 >
   <app-sign-in-form
     [isSubmitting]="(authStoreFacade.isSubmitting$ | async)!"
-    (signIn)="onSignIn($event)"
-    (register)="onRegister($event)"
-    (signInWithGoogle)="onSignInWithGoogle()"
+    (signIn)="signInWithEmailAndPassword($event)"
+    (register)="registerWithEmailAndPassword($event)"
+    (signInWithGoogle)="signInWithGoogle()"
   ></app-sign-in-form>
 </div>

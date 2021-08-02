@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AuthStoreFacadeService } from '@auth/services/auth-store-facade.service';
+import { AuthStoreFacadeService } from '@auth/services';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -19,7 +19,7 @@ export class SignInPageComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  // TODO: move these logic to facade? See RxJS blog posts
+  // TODO: create global store to manage failure / info message
   ngOnInit(): void {
     this.authStoreFacade.failureMessage$
       .pipe(untilDestroyed(this))
@@ -32,21 +32,15 @@ export class SignInPageComponent implements OnInit {
       );
   }
 
-  onSignIn(credentials: ICredentialsDto): void {
-    this.authStoreFacade.signInWithEmailAndPassword(
-      credentials.emailAddress,
-      credentials.password
-    );
+  signInWithEmailAndPassword(credentials: ICredentialsDto): void {
+    this.authStoreFacade.signInWithEmailAndPassword(credentials);
   }
 
-  onRegister(credentials: ICredentialsDto): void {
-    this.authStoreFacade.registerWithEmailAndPassword(
-      credentials.emailAddress,
-      credentials.password
-    );
+  registerWithEmailAndPassword(credentials: ICredentialsDto): void {
+    this.authStoreFacade.registerWithEmailAndPassword(credentials);
   }
 
-  onSignInWithGoogle(): void {
+  signInWithGoogle(): void {
     this.authStoreFacade.signInWithGoogle();
   }
 }

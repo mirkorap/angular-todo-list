@@ -1,4 +1,5 @@
 import { AuthFailure } from '@auth/failures/auth-failure';
+import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@auth/entities/user';
@@ -10,15 +11,9 @@ export abstract class AuthStoreFacadeService {
   abstract isSubmitting$: Observable<boolean>;
   abstract isSignedIn$: Observable<boolean>;
 
-  abstract registerWithEmailAndPassword(
-    emailAddress: string,
-    password: string
-  ): void;
+  abstract registerWithEmailAndPassword(credentials: ICredentialsDto): void;
 
-  abstract signInWithEmailAndPassword(
-    emailAddress: string,
-    password: string
-  ): void;
+  abstract signInWithEmailAndPassword(credentials: ICredentialsDto): void;
 
   abstract signInWithGoogle(): void;
 
