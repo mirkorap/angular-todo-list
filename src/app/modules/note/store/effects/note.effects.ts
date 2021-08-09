@@ -4,7 +4,7 @@ import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
 import { NoteFailure } from '@note/failures/note-failure';
-import { NoteRepositoryService } from '@note/services/note-repository.service';
+import { NoteRepositoryService } from '@note/services';
 import { TypedAction } from '@ngrx/store/src/models';
 import { switchMap } from 'rxjs/operators';
 
@@ -18,9 +18,9 @@ export class NoteEffects {
   createNote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.createNote),
-      switchMap(async (action) => {
+      switchMap(async ({ note }) => {
         const failureOrNote = await this.noteRepository.create(
-          NoteDto.fromObject(action.note).toDomain()
+          NoteDto.fromObject(note).toDomain()
         );
 
         return this.dispatchFailureOrSuccess(
@@ -35,9 +35,9 @@ export class NoteEffects {
   updateNote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.updateNote),
-      switchMap(async (action) => {
+      switchMap(async ({ note }) => {
         const failureOrNote = await this.noteRepository.update(
-          NoteDto.fromObject(action.note).toDomain()
+          NoteDto.fromObject(note).toDomain()
         );
 
         return this.dispatchFailureOrSuccess(
@@ -52,9 +52,9 @@ export class NoteEffects {
   deleteNote$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.deleteNote),
-      switchMap(async (action) => {
+      switchMap(async ({ note }) => {
         const failureOrNote = await this.noteRepository.delete(
-          NoteDto.fromObject(action.note).toDomain()
+          NoteDto.fromObject(note).toDomain()
         );
 
         return this.dispatchFailureOrSuccess(

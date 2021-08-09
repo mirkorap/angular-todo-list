@@ -13,13 +13,13 @@ export class NoteExistsGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.checkStore().pipe(
-      switchMap(() =>
-        this.noteStoreFacade.hasNote(route.params.id).pipe(
+      switchMap(() => {
+        return this.noteStoreFacade.hasNote(route.params.id).pipe(
           tap((hasNote) => {
             !hasNote && this.router.navigateByUrl('/notes');
           })
-        )
-      )
+        );
+      })
     );
   }
 
