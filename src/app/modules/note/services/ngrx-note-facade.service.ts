@@ -1,7 +1,7 @@
 import * as fromStore from '@note/store';
 import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
 import { Observable, combineLatest, of } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, take } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
@@ -64,6 +64,7 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   hasNote(id: string): Observable<boolean> {
     return this.noteEntities$.pipe(
       map((notes) => !!notes[id]),
+      startWith(false),
       take(1)
     );
   }
