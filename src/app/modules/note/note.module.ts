@@ -23,16 +23,16 @@ import { environment } from '@environments/environment';
     fromPages.NoteOverviewPageComponent
   ],
   imports: [
-    SharedModule,
-    NoteRoutingModule,
+    StoreModule.forFeature(fromStore.noteFeatureKey, fromStore.noteReducer),
     EffectsModule.forFeature([
       fromStore.NoteOverviewEffects,
       fromStore.NoteEffects
     ]),
-    StoreModule.forFeature(fromStore.noteFeatureKey, fromStore.noteReducer),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    SharedModule,
+    NoteRoutingModule
   ],
   providers: [
     NoteExistsGuard,
