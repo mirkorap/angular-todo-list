@@ -1,13 +1,11 @@
-:host {
+:host ::ng-deep {
   width: 100%;
 
   .mat-button-toggle-group {
     display: flex;
     justify-content: space-around;
   }
-}
 
-::ng-deep {
   .mat-button-toggle-group {
     border: none;
 
