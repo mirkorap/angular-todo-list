@@ -22,9 +22,9 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
       switchMap((entities) =>
         Object.entries(entities).map(([id, entity]) => {
           return { [id]: NoteDto.fromObject(entity as INoteDto).toDomain() };
-    })
+        })
       )
-  );
+    );
 
   failureMessage$: Observable<string> = this.store
     .select(fromStore.selectFailureMessage)
@@ -37,6 +37,8 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   );
 
   isLoaded$: Observable<boolean> = this.store.select(fromStore.selectIsLoaded);
+
+  total$: Observable<number> = this.store.select(fromStore.selectTotal);
 
   constructor(private store: Store<fromStore.NoteState>) {}
 
@@ -60,10 +62,17 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   }
 
   hasNote(id: string): Observable<boolean> {
-    return this.noteEntities$.pipe(
-      map((notes) => !!notes[id]),
-      startWith(false),
-      take(1)
+    return this.total$.pipe(
+      switchMap((total) => {
+        if (total <= 0) {
+          return of(false);
+        }
+
+        return this.noteEntities$.pipe(
+          map((notes) => !!notes[id]),
+          take(1)
+        );
+      })
     );
   }
 

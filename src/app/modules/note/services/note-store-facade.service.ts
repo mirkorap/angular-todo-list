@@ -10,6 +10,7 @@ export abstract class NoteStoreFacadeService {
   abstract failureMessage$: Observable<string>;
   abstract isLoading$: Observable<boolean>;
   abstract isLoaded$: Observable<boolean>;
+  abstract total$: Observable<number>;
 
   abstract loadAllNotes(): void;
 
