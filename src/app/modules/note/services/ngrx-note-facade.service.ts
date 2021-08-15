@@ -1,7 +1,7 @@
 import * as fromStore from '@note/store';
 import { INoteDto, NoteDto } from '@note/data-transfer-objects/note';
-import { Observable, combineLatest, of } from 'rxjs';
-import { filter, map, startWith, switchMap, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
@@ -16,16 +16,14 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
       map((notes) => notes.map((note) => NoteDto.fromObject(note).toDomain()))
     );
 
-  noteEntities$: Observable<Dictionary<Note>> = combineLatest([
-    this.store.select(fromStore.selectNoteEntities),
-    this.store.select(fromStore.selectNoteIds)
-  ]).pipe(
-    switchMap(([entities, ids]) => {
-      return (ids as string[]).map((id) => {
-        const entity = entities[id] as INoteDto;
-        return { [id]: NoteDto.fromObject(entity).toDomain() };
-      });
+  noteEntities$: Observable<Dictionary<Note>> = this.store
+    .select(fromStore.selectNoteEntities)
+    .pipe(
+      switchMap((entities) =>
+        Object.entries(entities).map(([id, entity]) => {
+          return { [id]: NoteDto.fromObject(entity as INoteDto).toDomain() };
     })
+      )
   );
 
   failureMessage$: Observable<string> = this.store
