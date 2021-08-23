@@ -80,7 +80,7 @@ export class TodoItemComponent implements ControlValueAccessor {
     this.disabled = disabled;
   }
 
-  onRemoveClick(): void {
+  emitTodoRemoveEvent(): void {
     this.todoRemove.emit();
   }
 }

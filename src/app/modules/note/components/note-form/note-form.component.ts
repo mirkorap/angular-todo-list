@@ -28,6 +28,7 @@ import { UniqueId } from '@shared/value-objects/uuid';
 })
 export class NoteFormComponent implements OnInit {
   @Input() note!: Note;
+
   @Output() save = new EventEmitter<Note>();
 
   bodyMaxLength = NoteBody.MAX_LENGTH;
@@ -44,16 +45,16 @@ export class NoteFormComponent implements OnInit {
     return this.noteForm.controls.todos as FormArray;
   }
 
-  findTodoCtrlElementAt(index: number): FormControl {
+  findTodoCtrlAt(index: number): FormControl {
     return this.todosCtrl.controls[index] as FormControl;
   }
 
-  onTodoAdd(): void {
+  addTodo(): void {
     const todoCtrl = this.fb.control(TodoItem.empty());
     this.todosCtrl.push(todoCtrl);
   }
 
-  onTodoRemove(index: number): void {
+  removeTodoAt(index: number): void {
     this.todosCtrl.removeAt(index);
   }
 

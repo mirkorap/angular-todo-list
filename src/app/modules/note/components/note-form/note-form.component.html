@@ -29,8 +29,8 @@
         <ng-container *ngFor="let control of todosCtrl.controls; index as i">
           <app-todo-item
             [todo]="control.value"
-            [formControl]="findTodoCtrlElementAt(i)"
-            (todoRemove)="onTodoRemove(i)"
+            [formControl]="findTodoCtrlAt(i)"
+            (todoRemove)="removeTodoAt(i)"
           ></app-todo-item>
         </ng-container>
       </mat-list>
@@ -41,7 +41,7 @@
         type="button"
         color="accent"
         mat-raised-button
-        (click)="onTodoAdd()"
+        (click)="addTodo()"
       >
         {{ 'Add Todo' | uppercase }}
       </button>
