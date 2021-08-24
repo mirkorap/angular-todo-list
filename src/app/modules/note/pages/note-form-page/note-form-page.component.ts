@@ -1,6 +1,6 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ActivatedRoute } from '@angular/router';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services';
 import { Observable } from 'rxjs';
@@ -20,6 +20,7 @@ export class NoteFormPageComponent implements OnInit {
   constructor(
     private noteStoreFacade: NoteStoreFacadeService,
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService
   ) {}
 
@@ -37,6 +38,10 @@ export class NoteFormPageComponent implements OnInit {
       .upsertNote(note)
       .pipe(untilDestroyed(this))
       .subscribe();
+  }
+
+  navigateToNoteOverviewPage(): void {
+    this.router.navigateByUrl('/notes');
   }
 
   private selectNoteFromRoute(): Observable<Note> {

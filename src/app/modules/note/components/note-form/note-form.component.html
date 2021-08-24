@@ -46,9 +46,20 @@
         {{ 'Add Todo' | uppercase }}
       </button>
 
-      <button type="submit" color="primary" mat-raised-button>
-        {{ 'Save' | uppercase }}
-      </button>
+      <div fxLayout="row" fxLayoutGap="1rem">
+        <button
+          type="button"
+          color="warn"
+          mat-raised-button
+          (click)="emitCancelEvent()"
+        >
+          {{ 'Cancel' | uppercase }}
+        </button>
+
+        <button type="submit" color="primary" mat-raised-button>
+          {{ 'Save' | uppercase }}
+        </button>
+      </div>
     </div>
   </div>
 </form>

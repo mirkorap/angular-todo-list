@@ -29,6 +29,7 @@ import { UniqueId } from '@shared/value-objects/uuid';
 export class NoteFormComponent implements OnInit {
   @Input() note!: Note;
 
+  @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<Note>();
 
   bodyMaxLength = NoteBody.MAX_LENGTH;
@@ -56,6 +57,10 @@ export class NoteFormComponent implements OnInit {
 
   removeTodoCtrlAt(index: number): void {
     this.todosCtrl.removeAt(index);
+  }
+
+  emitCancelEvent(): void {
+    this.cancel.emit();
   }
 
   submit(): void {
