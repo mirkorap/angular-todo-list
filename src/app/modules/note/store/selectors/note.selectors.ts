@@ -33,5 +33,3 @@ export const selectIsLoaded = createSelector(
   selectNoteState,
   (state) => state.isLoaded
 );
-
-export const selectTotal = createSelector(selectNotes, (notes) => notes.length);

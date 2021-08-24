@@ -39,8 +39,6 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
 
   isLoaded$: Observable<boolean> = this.store.select(fromStore.selectIsLoaded);
 
-  total$: Observable<number> = this.store.select(fromStore.selectTotal);
-
   constructor(private store: Store<fromStore.NoteState>) {}
 
   loadAllNotes(): void {
@@ -63,17 +61,9 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   }
 
   hasNote(id: string): Observable<boolean> {
-    return this.total$.pipe(
-      switchMap((total) => {
-        if (total <= 0) {
-          return of(false);
-        }
-
-        return this.noteEntities$.pipe(
-          map((notes) => !!notes[id]),
-          take(1)
-        );
-      })
+    return this.noteEntities$.pipe(
+      map((notes) => !!notes[id]),
+      take(1)
     );
   }
 
