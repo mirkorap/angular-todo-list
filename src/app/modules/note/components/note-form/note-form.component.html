@@ -30,7 +30,7 @@
           <app-todo-item
             [todo]="control.value"
             [formControl]="findTodoCtrlAt(i)"
-            (todoRemove)="removeTodoAt(i)"
+            (todoRemove)="removeTodoCtrlAt(i)"
           ></app-todo-item>
         </ng-container>
       </mat-list>
@@ -41,7 +41,7 @@
         type="button"
         color="accent"
         mat-raised-button
-        (click)="addTodo()"
+        (click)="addTodoCtrl()"
       >
         {{ 'Add Todo' | uppercase }}
       </button>
