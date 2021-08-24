@@ -5,6 +5,6 @@
   fxLayoutAlign="center"
 >
   <div fxLayout="column" fxFlex="90" fxFlex.gt-xs="50">
-    <app-note-form [note]="note" (save)="onSave($event)"></app-note-form>
+    <app-note-form [note]="note" (save)="upsertNote($event)"></app-note-form>
   </div>
 </div>

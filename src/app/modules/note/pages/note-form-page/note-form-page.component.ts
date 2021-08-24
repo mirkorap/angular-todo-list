@@ -23,6 +23,7 @@ export class NoteFormPageComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  // TODO: create global store to manage failure / info message
   ngOnInit(): void {
     this.noteStoreFacade.failureMessage$
       .pipe(untilDestroyed(this))
@@ -31,7 +32,7 @@ export class NoteFormPageComponent implements OnInit {
     this.note$ = this.selectNoteFromRoute();
   }
 
-  onSave(note: Note): void {
+  upsertNote(note: Note): void {
     this.noteStoreFacade
       .upsertNote(note)
       .pipe(untilDestroyed(this))
