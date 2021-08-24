@@ -49,12 +49,12 @@ export class NoteFormComponent implements OnInit {
     return this.todosCtrl.controls[index] as FormControl;
   }
 
-  addTodo(): void {
+  addTodoCtrl(): void {
     const todoCtrl = this.fb.control(TodoItem.empty());
     this.todosCtrl.push(todoCtrl);
   }
 
-  removeTodoAt(index: number): void {
+  removeTodoCtrlAt(index: number): void {
     this.todosCtrl.removeAt(index);
   }
 

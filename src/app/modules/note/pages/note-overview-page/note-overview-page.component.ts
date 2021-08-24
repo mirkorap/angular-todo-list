@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Note } from '@note/entities/note';
-import { NoteStoreFacadeService } from '@note/services/note-store-facade.service';
+import { NoteStoreFacadeService } from '@note/services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -17,17 +17,15 @@ export class NoteOverviewPageComponent implements OnInit {
 
   constructor(
     public noteStoreFacade: NoteStoreFacadeService,
-    private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
-  // TODO: move these logic to facade? See RxJS blog posts
+  // TODO: create global store to manage failure / info message
   ngOnInit(): void {
     this.noteStoreFacade.failureMessage$
       .pipe(untilDestroyed(this))
       .subscribe((failureMessage) => this.toastr.error(failureMessage));
-
-    this.noteStoreFacade.loadAllNotes();
   }
 
   canShowNote(note: Note): boolean {
@@ -38,20 +36,20 @@ export class NoteOverviewPageComponent implements OnInit {
     return note.isUncompleted();
   }
 
-  onNoteClick(note: Note): void {
+  navigateToEditNotePage(note: Note): void {
     this.router.navigateByUrl(`/notes/${note.id.value}`);
   }
 
-  onNoteChange(note: Note): void {
+  updateNote(note: Note): void {
     this.noteStoreFacade.updateNote(note);
   }
 
-  onNoteDelete(note: Note): void {
+  deleteNote(note: Note): void {
     const confirmed = confirm('Are you sure you want to delete this note?');
     confirmed && this.noteStoreFacade.deleteNote(note);
   }
 
-  onAddClick(): void {
+  navigateToNewNotePage(): void {
     this.router.navigateByUrl('/notes/new');
   }
 }
