@@ -5,7 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
 import { NoteFailure } from '@note/failures/note-failure';
-import { NoteRepositoryService } from '@note/services/note-repository.service';
+import { NoteRepositoryService } from '@note/services';
 import { TypedAction } from '@ngrx/store/src/models';
 
 @Injectable()

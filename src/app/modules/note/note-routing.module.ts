@@ -18,6 +18,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
+    resolve: { state: NoteStateResolver },
     component: fromPages.NoteOverviewPageComponent
   }
 ];

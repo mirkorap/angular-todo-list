@@ -25,7 +25,6 @@ export class LoadingDirective implements OnInit {
     this.createSpinnerComponent();
   }
 
-  // TODO: use spinner on service request
   private createSpinnerComponent(): void {
     const factory = this.resolver.resolveComponentFactory(NgxSpinnerComponent);
     const component = this.viewContainer.createComponent(factory);

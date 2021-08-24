@@ -1,13 +1,14 @@
 import { AuthService, AuthStoreFacadeService } from '@auth/services';
 import { CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { AuthFailure } from '@auth/failures/auth-failure';
 import { Injectable } from '@angular/core';
 import { User } from '@auth/entities/user';
 import { switchMap } from 'rxjs/operators';
 
-@Injectable()
-export class AuthGuard implements CanActivate {
+@Injectable({
+  providedIn: 'root'
+})
+export class PublicAreaGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private authStoreFacade: AuthStoreFacadeService,
@@ -21,20 +22,14 @@ export class AuthGuard implements CanActivate {
           return this.markAsAuthorized(failureOrUser);
         }
 
-        return this.markAsUnauthorized(failureOrUser);
+        return of(true);
       })
     );
   }
 
   private markAsAuthorized(user: User): Observable<boolean> {
     this.authStoreFacade.authorize(user);
-
-    return of(true);
-  }
-
-  private markAsUnauthorized(failure: AuthFailure): Observable<boolean> {
-    this.authStoreFacade.unauthorize(failure);
-    this.router.navigateByUrl('/auth');
+    this.router.navigateByUrl('/notes');
 
     return of(false);
   }

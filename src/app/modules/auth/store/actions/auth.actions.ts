@@ -1,11 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { AuthFailure } from '@auth/failures/auth-failure';
+import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { IUserDto } from '@auth/data-transfer-objects/user';
 
 // RegisterWithEmailAndPassword actions
 export const registerWithEmailAndPassword = createAction(
   '[Auth] Register With Email And Password',
-  props<{ emailAddress: string; password: string }>()
+  props<{ credentials: ICredentialsDto }>()
 );
 
 export const registerWithEmailAndPasswordSuccess = createAction(
@@ -21,7 +22,7 @@ export const registerWithEmailAndPasswordFail = createAction(
 // SignInWithEmailAndPassword actions
 export const signInWithEmailAndPassword = createAction(
   '[Auth] Sign In With Email And Password',
-  props<{ emailAddress: string; password: string }>()
+  props<{ credentials: ICredentialsDto }>()
 );
 
 export const signInWithEmailAndPasswordSuccess = createAction(

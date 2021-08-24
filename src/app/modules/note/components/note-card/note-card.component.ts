@@ -21,16 +21,16 @@ export class NoteCardComponent {
   @Output() noteChange = new EventEmitter<Note>();
   @Output() noteDelete = new EventEmitter<Note>();
 
-  onBodyClick(): void {
+  emitNoteClickEvent(): void {
     this.noteClick.emit(this.note);
   }
 
-  onTodoChange(todo: TodoItem): void {
+  emitNoteChangeEvent(todo: TodoItem): void {
     this.note.updateTodo(todo.copyWith({ done: !todo.done }));
     this.noteChange.emit(this.note);
   }
 
-  onDeleteClick(): void {
+  emitNoteDeleteEvent(): void {
     this.noteDelete.emit(this.note);
   }
 }

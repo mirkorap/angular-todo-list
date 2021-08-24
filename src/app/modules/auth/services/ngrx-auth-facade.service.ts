@@ -2,6 +2,7 @@ import * as fromStore from '@auth/store';
 import { filter, map } from 'rxjs/operators';
 import { AuthFailure } from '@auth/failures/auth-failure';
 import { AuthStoreFacadeService } from './auth-store-facade.service';
+import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -32,16 +33,14 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
 
   constructor(private store: Store<fromStore.AuthState>) {}
 
-  registerWithEmailAndPassword(emailAddress: string, password: string): void {
+  registerWithEmailAndPassword(credentials: ICredentialsDto): void {
     this.store.dispatch(
-      fromStore.registerWithEmailAndPassword({ emailAddress, password })
+      fromStore.registerWithEmailAndPassword({ credentials })
     );
   }
 
-  signInWithEmailAndPassword(emailAddress: string, password: string): void {
-    this.store.dispatch(
-      fromStore.signInWithEmailAndPassword({ emailAddress, password })
-    );
+  signInWithEmailAndPassword(credentials: ICredentialsDto): void {
+    this.store.dispatch(fromStore.signInWithEmailAndPassword({ credentials }));
   }
 
   signInWithGoogle(): void {

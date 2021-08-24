@@ -89,7 +89,7 @@ export class FirebaseAuthService implements AuthService {
           return of(AuthFailure.USER_NOT_SIGNED_IN);
         }
 
-        return of(UserDto.fromFirebase(firebaseUser).toDomain());
+        return UserDto.fromFirebase(firebaseUser).toDomain().asObservable();
       }),
       catchError(() => of(AuthFailure.SERVER_ERROR))
     );

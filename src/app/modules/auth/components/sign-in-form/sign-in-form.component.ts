@@ -21,7 +21,7 @@ export class SignInFormComponent implements OnInit {
 
   @Output() signIn = new EventEmitter<ICredentialsDto>();
   @Output() register = new EventEmitter<ICredentialsDto>();
-  @Output() signInWithGoogle = new EventEmitter();
+  @Output() signInWithGoogle = new EventEmitter<void>();
 
   authForm!: FormGroup;
 
@@ -31,25 +31,23 @@ export class SignInFormComponent implements OnInit {
     this.buildForm();
   }
 
-  onSignInClick(): void {
+  emitSignInEvent(): void {
     if (this.authForm.invalid) {
       return this.authForm.markAllAsTouched();
     }
 
-    const credentials: ICredentialsDto = { ...this.authForm.value };
-    this.signIn.emit(credentials);
+    this.signIn.emit(this.authForm.value);
   }
 
-  onRegisterClick(): void {
+  emitRegisterEvent(): void {
     if (this.authForm.invalid) {
       return this.authForm.markAllAsTouched();
     }
 
-    const credentials: ICredentialsDto = { ...this.authForm.value };
-    this.register.emit(credentials);
+    this.register.emit(this.authForm.value);
   }
 
-  onSignInWithGoogleClick(): void {
+  emitSignInWithGoogleEvent(): void {
     this.signInWithGoogle.emit();
   }
 

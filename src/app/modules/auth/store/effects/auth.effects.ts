@@ -2,7 +2,7 @@ import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { IUserDto, UserDto } from '@auth/data-transfer-objects/user';
 import { AuthFailure } from '@auth/failures/auth-failure';
-import { AuthService } from '@auth/services/auth.service';
+import { AuthService } from '@auth/services';
 import { EmailAddress } from '@auth/value-objects/email-address';
 import { Injectable } from '@angular/core';
 import { Password } from '@auth/value-objects/password';
@@ -22,11 +22,11 @@ export class AuthEffects {
   registerWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.registerWithEmailAndPassword),
-      switchMap(async (action) => {
+      switchMap(async ({ credentials }) => {
         const failureOrUser =
           await this.authService.registerWithEmailAndPassword(
-            new EmailAddress(action.emailAddress),
-            new Password(action.password)
+            new EmailAddress(credentials.emailAddress),
+            new Password(credentials.password)
           );
 
         return this.dispatchFailureOrSuccess(
@@ -41,10 +41,10 @@ export class AuthEffects {
   signInWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.signInWithEmailAndPassword),
-      switchMap(async (action) => {
+      switchMap(async ({ credentials }) => {
         const failureOrUser = await this.authService.signInWithEmailAndPassword(
-          new EmailAddress(action.emailAddress),
-          new Password(action.password)
+          new EmailAddress(credentials.emailAddress),
+          new Password(credentials.password)
         );
 
         return this.dispatchFailureOrSuccess(

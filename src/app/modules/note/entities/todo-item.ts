@@ -26,10 +26,6 @@ export class TodoItem extends Entity {
     return this.done;
   }
 
-  isUncompleted(): boolean {
-    return !this.isCompleted();
-  }
-
   equalsTo(objectToCompare: this): boolean {
     return this.id.equalsTo(objectToCompare.id);
   }

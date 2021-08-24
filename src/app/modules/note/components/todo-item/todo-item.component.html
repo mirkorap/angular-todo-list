@@ -22,10 +22,11 @@
 
   <div fxLayout="row">
     <button
-      mat-icon-button
+      type="button"
       color="warn"
+      mat-icon-button
       [disabled]="disabled"
-      (click)="onRemoveClick()"
+      (click)="emitTodoRemoveEvent()"
     >
       <mat-icon>remove_circle</mat-icon>
     </button>
