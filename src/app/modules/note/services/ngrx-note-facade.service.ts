@@ -19,10 +19,11 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
   noteEntities$: Observable<Dictionary<Note>> = this.store
     .select(fromStore.selectNoteEntities)
     .pipe(
-      switchMap((entities) =>
-        Object.entries(entities).map(([id, entity]) => {
-          return { [id]: NoteDto.fromObject(entity as INoteDto).toDomain() };
-        })
+      map((entities) =>
+        Object.entries(entities).reduce((acc, [id, entity]) => {
+          const note = NoteDto.fromObject(entity as INoteDto).toDomain();
+          return { ...acc, [id]: note };
+        }, {})
       )
     );
 
