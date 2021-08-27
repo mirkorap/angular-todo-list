@@ -14,6 +14,22 @@ export class Message extends Entity {
     this.severity = severity;
   }
 
+  static info(id: UniqueId, text: string): Message {
+    return new Message(id, text, Severity.INFO);
+  }
+
+  static warn(id: UniqueId, text: string): Message {
+    return new Message(id, text, Severity.WARN);
+  }
+
+  static error(id: UniqueId, text: string): Message {
+    return new Message(id, text, Severity.ERROR);
+  }
+
+  static success(id: UniqueId, text: string): Message {
+    return new Message(id, text, Severity.SUCCESS);
+  }
+
   equalsTo(objectToCompare: this): boolean {
     return this.id.equalsTo(objectToCompare.id);
   }

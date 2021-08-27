@@ -3,7 +3,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthStoreFacadeService } from '@auth/services';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @UntilDestroy()
 @Component({
@@ -15,16 +14,10 @@ import { ToastrService } from 'ngx-toastr';
 export class SignInPageComponent implements OnInit {
   constructor(
     public authStoreFacade: AuthStoreFacadeService,
-    private router: Router,
-    private toastr: ToastrService
+    private router: Router
   ) {}
 
-  // TODO: create global store to manage failure / info message
   ngOnInit(): void {
-    this.authStoreFacade.failureMessage$
-      .pipe(untilDestroyed(this))
-      .subscribe((failureMessage) => this.toastr.error(failureMessage));
-
     this.authStoreFacade.isSignedIn$
       .pipe(untilDestroyed(this))
       .subscribe(

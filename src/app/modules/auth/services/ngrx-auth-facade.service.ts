@@ -19,11 +19,9 @@ export class NgrxAuthFacadeService implements AuthStoreFacadeService {
       )
     );
 
-  failureMessage$: Observable<string> = this.store
-    .select(fromStore.selectFailureMessage)
-    .pipe(
-      filter((failureMessage): failureMessage is string => !!failureMessage)
-    );
+  failure$: Observable<AuthFailure> = this.store
+    .select(fromStore.selectFailure)
+    .pipe(filter((failure): failure is AuthFailure => !!failure));
 
   isSubmitting$: Observable<boolean> = this.store.select(
     fromStore.isSubmitting
