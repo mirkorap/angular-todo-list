@@ -1,13 +1,14 @@
 import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
+import { NoteFailure } from '@note/failures/note-failure';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export abstract class NoteStoreFacadeService {
   abstract notes$: Observable<Note[]>;
   abstract noteEntities$: Observable<Dictionary<Note>>;
-  abstract failureMessage$: Observable<string>;
+  abstract failure$: Observable<NoteFailure>;
   abstract isLoading$: Observable<boolean>;
   abstract isLoaded$: Observable<boolean>;
 

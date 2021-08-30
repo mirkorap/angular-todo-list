@@ -5,6 +5,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 import { Injectable } from '@angular/core';
 import { Note } from '@note/entities/note';
+import { NoteFailure } from '@note/failures/note-failure';
 import { NoteStoreFacadeService } from './note-store-facade.service';
 import { Store } from '@ngrx/store';
 
@@ -27,11 +28,9 @@ export class NgrxNoteFacadeService implements NoteStoreFacadeService {
       )
     );
 
-  failureMessage$: Observable<string> = this.store
-    .select(fromStore.selectFailureMessage)
-    .pipe(
-      filter((failureMessage): failureMessage is string => !!failureMessage)
-    );
+  failure$: Observable<NoteFailure> = this.store
+    .select(fromStore.selectFailure)
+    .pipe(filter((failure): failure is NoteFailure => !!failure));
 
   isLoading$: Observable<boolean> = this.store.select(
     fromStore.selectIsLoading
