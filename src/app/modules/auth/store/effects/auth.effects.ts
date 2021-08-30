@@ -1,23 +1,48 @@
 import * as fromActions from '@auth/store/actions/auth.actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { AuthFailure, failureMessageMap } from '@auth/failures/auth-failure';
 import { IUserDto, UserDto } from '@auth/data-transfer-objects/user';
-import { AuthFailure } from '@auth/failures/auth-failure';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@auth/services';
 import { EmailAddress } from '@auth/value-objects/email-address';
+import { GlobalStoreFacadeService } from '@shared/services';
 import { Injectable } from '@angular/core';
+import { Message } from '@shared/entities/message';
 import { Password } from '@auth/value-objects/password';
 import { Router } from '@angular/router';
 import { TypedAction } from '@ngrx/store/src/models';
+import { UniqueId } from '@shared/value-objects/uuid';
 import { User } from '@auth/entities/user';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private globalStoreFacade: GlobalStoreFacadeService,
     private router: Router
   ) {}
+
+  failure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          fromActions.unauthorize,
+          fromActions.registerWithEmailAndPasswordFail,
+          fromActions.signInWithEmailAndPasswordFail,
+          fromActions.signInWithGoogleFail
+        ),
+        tap(({ failure }) => {
+          const message = Message.error(
+            UniqueId.generate(),
+            failureMessageMap[failure]
+          );
+
+          this.globalStoreFacade.setErrorMessage(message);
+        })
+      ),
+    { dispatch: false }
+  );
 
   registerWithEmailAndPassword$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,6 +1,5 @@
 import * as fromReducer from '@note/store/reducers/note.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { noteFailureMessageMap } from '@note/failures/note-failure';
 
 const { selectAll, selectEntities } = fromReducer.adapter.getSelectors();
 
@@ -19,10 +18,6 @@ export const selectFailure = createSelector(
   selectNoteState,
   (state) => state.failure
 );
-
-export const selectFailureMessage = createSelector(selectFailure, (failure) => {
-  return failure ? noteFailureMessageMap[failure] : null;
-});
 
 export const selectIsLoading = createSelector(
   selectNoteState,

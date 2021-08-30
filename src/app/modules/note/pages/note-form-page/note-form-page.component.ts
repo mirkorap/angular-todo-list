@@ -4,7 +4,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services';
 import { Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs/operators';
 
 @UntilDestroy()
@@ -20,16 +19,10 @@ export class NoteFormPageComponent implements OnInit {
   constructor(
     private noteStoreFacade: NoteStoreFacadeService,
     private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService
+    private router: Router
   ) {}
 
-  // TODO: create global store to manage failure / info message
   ngOnInit(): void {
-    this.noteStoreFacade.failureMessage$
-      .pipe(untilDestroyed(this))
-      .subscribe((failureMessage) => this.toastr.error(failureMessage));
-
     this.note$ = this.selectNoteFromRoute();
   }
 
