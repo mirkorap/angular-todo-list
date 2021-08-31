@@ -1,7 +1,8 @@
 import { AuthService, AuthStoreFacadeService } from '@auth/services';
-import { CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { CanActivate } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { RouteNavigatorService } from '@app/services';
 import { User } from '@auth/entities/user';
 import { switchMap } from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ export class PublicAreaGuard implements CanActivate {
   constructor(
     private authService: AuthService,
     private authStoreFacade: AuthStoreFacadeService,
-    private router: Router
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   canActivate(): Observable<boolean> {
@@ -29,7 +30,7 @@ export class PublicAreaGuard implements CanActivate {
 
   private markAsAuthorized(user: User): Observable<boolean> {
     this.authStoreFacade.authorize(user);
-    this.router.navigateByUrl('/notes');
+    this.routeNavigator.navigateToNoteOverview();
 
     return of(false);
   }
