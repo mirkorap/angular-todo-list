@@ -1,8 +1,9 @@
 import { AuthService, AuthStoreFacadeService } from '@auth/services';
-import { CanLoad, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthFailure } from '@auth/failures/auth-failure';
+import { CanLoad } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { RouteNavigatorService } from '@app/services';
 import { User } from '@auth/entities/user';
 import { switchMap } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ export class PrivateAreaGuard implements CanLoad {
   constructor(
     private authService: AuthService,
     private authStoreFacade: AuthStoreFacadeService,
-    private router: Router
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   canLoad(): Observable<boolean> {
@@ -36,7 +37,7 @@ export class PrivateAreaGuard implements CanLoad {
 
   private markAsUnauthorized(failure: AuthFailure): Observable<boolean> {
     this.authStoreFacade.unauthorize(failure);
-    this.router.navigateByUrl('/auth');
+    this.routeNavigator.navigateToSignIn();
 
     return of(false);
   }

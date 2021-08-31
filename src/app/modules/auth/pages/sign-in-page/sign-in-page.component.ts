@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthStoreFacadeService } from '@auth/services';
 import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
-import { Router } from '@angular/router';
+import { RouteNavigatorService } from '@app/services';
 
 @UntilDestroy()
 @Component({
@@ -14,15 +14,15 @@ import { Router } from '@angular/router';
 export class SignInPageComponent implements OnInit {
   constructor(
     public authStoreFacade: AuthStoreFacadeService,
-    private router: Router
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   ngOnInit(): void {
     this.authStoreFacade.isSignedIn$
       .pipe(untilDestroyed(this))
-      .subscribe(
-        (isSignedIn) => isSignedIn && this.router.navigateByUrl('/notes')
-      );
+      .subscribe((isSignedIn) => {
+        return isSignedIn && this.routeNavigator.navigateToNoteOverview();
+      });
   }
 
   signInWithEmailAndPassword(credentials: ICredentialsDto): void {

@@ -9,7 +9,7 @@ import { GlobalStoreFacadeService } from '@shared/services';
 import { Injectable } from '@angular/core';
 import { Message } from '@shared/entities/message';
 import { Password } from '@auth/value-objects/password';
-import { Router } from '@angular/router';
+import { RouteNavigatorService } from '@app/services';
 import { TypedAction } from '@ngrx/store/src/models';
 import { UniqueId } from '@shared/value-objects/uuid';
 import { User } from '@auth/entities/user';
@@ -20,7 +20,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private globalStoreFacade: GlobalStoreFacadeService,
-    private router: Router
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   failure$ = createEffect(
@@ -101,7 +101,7 @@ export class AuthEffects {
       ofType(fromActions.signOut),
       switchMap(async () => {
         await this.authService.signOut();
-        this.router.navigateByUrl('/auth');
+        this.routeNavigator.navigateToSignIn();
 
         return fromActions.signOutSuccess();
       })

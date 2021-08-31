@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouteNavigatorParams, RouteNavigatorService } from '@app/services';
 import { Note } from '@note/entities/note';
 import { NoteStoreFacadeService } from '@note/services';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-note-overview-page',
@@ -14,7 +14,7 @@ export class NoteOverviewPageComponent {
 
   constructor(
     public noteStoreFacade: NoteStoreFacadeService,
-    private router: Router
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   canShowNote(note: Note): boolean {
@@ -26,7 +26,11 @@ export class NoteOverviewPageComponent {
   }
 
   navigateToEditNotePage(note: Note): void {
-    this.router.navigateByUrl(`/notes/${note.id.value}`);
+    const options: RouteNavigatorParams<{ id: string }> = {
+      params: { id: note.id.value }
+    };
+
+    this.routeNavigator.navigateToEditNote(options);
   }
 
   updateNote(note: Note): void {
@@ -39,6 +43,6 @@ export class NoteOverviewPageComponent {
   }
 
   navigateToNewNotePage(): void {
-    this.router.navigateByUrl('/notes/new');
+    this.routeNavigator.navigateToNewNote();
   }
 }
