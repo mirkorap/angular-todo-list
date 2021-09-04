@@ -1,14 +1,5 @@
-import * as validators from '@shared/validators/form-validators';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { SignInForm } from '@auth/forms/sign-in.form';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -16,45 +7,8 @@ import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
   styleUrls: ['./sign-in-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SignInFormComponent implements OnInit {
+export class SignInFormComponent {
   @Input() isSubmitting = false;
 
-  @Output() signIn = new EventEmitter<ICredentialsDto>();
-  @Output() register = new EventEmitter<ICredentialsDto>();
-  @Output() signInWithGoogle = new EventEmitter<void>();
-
-  authForm!: FormGroup;
-
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.buildForm();
-  }
-
-  emitSignInEvent(): void {
-    if (this.authForm.invalid) {
-      return this.authForm.markAllAsTouched();
-    }
-
-    this.signIn.emit(this.authForm.value);
-  }
-
-  emitRegisterEvent(): void {
-    if (this.authForm.invalid) {
-      return this.authForm.markAllAsTouched();
-    }
-
-    this.register.emit(this.authForm.value);
-  }
-
-  emitSignInWithGoogleEvent(): void {
-    this.signInWithGoogle.emit();
-  }
-
-  private buildForm(): void {
-    this.authForm = this.fb.group({
-      emailAddress: ['', validators.emailAddressValidator()],
-      password: ['', validators.passwordValidator()]
-    });
-  }
+  constructor(public signInForm: SignInForm) {}
 }
