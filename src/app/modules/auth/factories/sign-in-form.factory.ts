@@ -14,8 +14,8 @@ export class SignInFormFactory {
 
   private createFormGroup(): FormGroup {
     return this.fb.group({
-      emailAddress: ['', validators.emailAddressValidator()],
-      password: ['', validators.passwordValidator()]
+      emailAddress: this.fb.control('', validators.emailAddressValidator()),
+      password: this.fb.control('', validators.passwordValidator())
     });
   }
 }
