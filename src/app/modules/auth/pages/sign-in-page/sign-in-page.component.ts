@@ -38,7 +38,7 @@ export class SignInPageComponent implements OnInit {
     this.signInWithGoogle();
   }
 
-  redirectSignedInUser(): void {
+  private redirectSignedInUser(): void {
     const sub = this.authStoreFacade.isSignedIn$
       .pipe(filter((isSignedIn) => isSignedIn))
       .subscribe(() => this.routeNavigator.navigateToNoteOverview());
@@ -46,7 +46,7 @@ export class SignInPageComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 
-  signInWithEmailAndPassword(): void {
+  private signInWithEmailAndPassword(): void {
     const sub = this.signInForm.signInClick$.subscribe((credentials) => {
       this.authStoreFacade.signInWithEmailAndPassword(credentials);
     });
@@ -54,7 +54,7 @@ export class SignInPageComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 
-  registerWithEmailAndPassword(): void {
+  private registerWithEmailAndPassword(): void {
     const sub = this.signInForm.registerClick$.subscribe((credentials) => {
       this.authStoreFacade.registerWithEmailAndPassword(credentials);
     });
@@ -62,7 +62,7 @@ export class SignInPageComponent implements OnInit {
     this.subscriptions.add(sub);
   }
 
-  signInWithGoogle(): void {
+  private signInWithGoogle(): void {
     const sub = this.signInForm.signInWithGoogleClick$.subscribe(() => {
       this.authStoreFacade.signInWithGoogle();
     });
