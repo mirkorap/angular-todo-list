@@ -31,6 +31,10 @@ export class TodoItemDto implements ITodoItemDto {
     return new TodoItemDto(todoItem.id, todoItem.name, todoItem.done);
   }
 
+  toObject(): ITodoItemDto {
+    return JSON.parse(JSON.stringify(this));
+  }
+
   toDomain(): TodoItem {
     return new TodoItem(
       new UniqueId(this.id),

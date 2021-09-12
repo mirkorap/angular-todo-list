@@ -1,4 +1,4 @@
-<form *ngIf="note" [formGroup]="noteForm" (ngSubmit)="submit()">
+<form [formGroup]="noteForm.asFormGroup" (ngSubmit)="noteForm.save()">
   <div fxLayout="column" fxLayoutGap="2rem">
     <div fxLayout="row">
       <mat-form-field fxFlex>
@@ -25,12 +25,12 @@
 
     <div fxLayout="column">
       <h2>Todos</h2>
-      <mat-list fxFlex>
-        <ng-container *ngFor="let control of todosCtrl.controls; index as i">
+      <mat-list fxFlex formArrayName="todos">
+        <ng-container *ngFor="let todo of noteForm.todos.controls; index as i">
           <app-todo-item
-            [todo]="control.value"
-            [formControl]="findTodoCtrlAt(i)"
-            (todoRemove)="removeTodoCtrlAt(i)"
+            [todo]="todo.value"
+            [formControlName]="i"
+            (todoRemove)="noteForm.removeTodoAt(i)"
           ></app-todo-item>
         </ng-container>
       </mat-list>
@@ -41,7 +41,7 @@
         type="button"
         color="accent"
         mat-raised-button
-        (click)="addTodoCtrl()"
+        (click)="noteForm.addTodo()"
       >
         {{ 'Add Todo' | uppercase }}
       </button>
@@ -51,7 +51,7 @@
           type="button"
           color="warn"
           mat-raised-button
-          (click)="emitCancelEvent()"
+          (click)="noteForm.cancel()"
         >
           {{ 'Cancel' | uppercase }}
         </button>

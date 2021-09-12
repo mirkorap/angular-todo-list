@@ -1,46 +1,59 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
 import { Note } from '@note/entities/note';
+import { NoteForm } from '@note/forms/note.form';
+import { NoteFormFactory } from '@note/factories/note-form.factory';
 import { NoteStoreFacadeService } from '@note/services';
-import { Observable } from 'rxjs';
 import { RouteNavigatorService } from '@app/services';
+import { Subscription } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';
 
-@UntilDestroy()
+@UntilDestroy({ arrayName: 'subscriptions' })
 @Component({
   selector: 'app-note-form-page',
   templateUrl: './note-form-page.component.html',
   styleUrls: ['./note-form-page.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    NoteFormFactory,
+    {
+      provide: NoteForm,
+      useFactory: (factory: NoteFormFactory, route: ActivatedRoute) => {
+        const note: Note = route.snapshot.data.note;
+        return factory.create(note);
+      },
+      deps: [NoteFormFactory, ActivatedRoute]
+    }
+  ]
 })
 export class NoteFormPageComponent implements OnInit {
-  note$!: Observable<Note>;
+  private subscriptions = new Subscription();
 
   constructor(
+    private noteForm: NoteForm,
     private noteStoreFacade: NoteStoreFacadeService,
-    private routeNavigator: RouteNavigatorService,
-    private route: ActivatedRoute
+    private routeNavigator: RouteNavigatorService
   ) {}
 
   ngOnInit(): void {
-    this.note$ = this.selectNoteFromRoute();
+    this.upsertNote();
+    this.navigateToNoteOverview();
   }
 
-  upsertNote(note: Note): void {
-    this.noteStoreFacade
-      .upsertNote(note)
-      .pipe(untilDestroyed(this))
+  upsertNote(): void {
+    const sub = this.noteForm.saveClick$
+      .pipe(switchMap((note) => this.noteStoreFacade.upsertNote(note)))
       .subscribe();
+
+    this.subscriptions.add(sub);
   }
 
-  navigateToNoteOverviewPage(): void {
-    this.routeNavigator.navigateToNoteOverview();
-  }
+  navigateToNoteOverview(): void {
+    const sub = this.noteForm.cancelClick$.subscribe(() => {
+      this.routeNavigator.navigateToNoteOverview();
+    });
 
-  private selectNoteFromRoute(): Observable<Note> {
-    return this.route.params.pipe(
-      switchMap((params) => this.noteStoreFacade.selectNoteOrCreate(params.id))
-    );
+    this.subscriptions.add(sub);
   }
 }
