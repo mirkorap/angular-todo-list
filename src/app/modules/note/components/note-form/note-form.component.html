@@ -13,6 +13,7 @@
         <mat-hint align="end">
           {{ body.value?.length || 0 }} / {{ bodyMaxLength }}
         </mat-hint>
+        <mat-error>Required field</mat-error>
       </mat-form-field>
     </div>
 
@@ -33,6 +34,10 @@
             (todoRemove)="noteForm.removeTodoAt(i)"
           ></app-todo-item>
         </ng-container>
+
+        <mat-error *ngIf="noteForm.todos.errors">
+          You cannot add more than 3 todos
+        </mat-error>
       </mat-list>
     </div>
 
