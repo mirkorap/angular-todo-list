@@ -9,11 +9,11 @@ import {
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ITodoItemDto } from '@note/data-transfer-objects/todo-item';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { TodoItem } from '@note/entities/todo-item';
 import { TodoName } from '@note/value-objects/todo-name';
 
-type OnChange = (todo: TodoItem) => void;
+type OnChange = (todo: ITodoItemDto) => void;
 type OnTouched = () => void;
 
 @Component({
@@ -30,20 +30,20 @@ type OnTouched = () => void;
   ]
 })
 export class TodoItemComponent implements ControlValueAccessor {
-  @Input() todo!: TodoItem;
+  @Input() todo!: ITodoItemDto;
   @Output() todoRemove = new EventEmitter<void>();
 
   nameMaxLength = TodoName.MAX_LENGTH;
   touched = false;
   disabled = false;
 
-  onChange: OnChange = (_todo: TodoItem): void => {};
+  onChange: OnChange = (_todo: ITodoItemDto): void => {};
   onTouched: OnTouched = () => {};
 
   onDoneChange(event: MatCheckboxChange): void {
     this.markAsTouched();
     if (!this.disabled) {
-      this.todo = this.todo.copyWith({ done: event.checked });
+      this.todo = { ...this.todo, done: event.checked };
       this.onChange(this.todo);
     }
   }
@@ -52,12 +52,12 @@ export class TodoItemComponent implements ControlValueAccessor {
     this.markAsTouched();
     if (!this.disabled) {
       const name = (event.target as HTMLInputElement).value;
-      this.todo = this.todo.copyWith({ name: new TodoName(name) });
+      this.todo = { ...this.todo, name };
       this.onChange(this.todo);
     }
   }
 
-  writeValue(todo: TodoItem): void {
+  writeValue(todo: ITodoItemDto): void {
     this.todo = todo;
   }
 

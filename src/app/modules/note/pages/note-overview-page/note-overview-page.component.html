@@ -21,7 +21,7 @@
         *ngIf="canShowNote(note)"
         class="mb-5"
         [note]="note"
-        (noteClick)="navigateToEditNotePage($event)"
+        (noteClick)="navigateToEditNote($event)"
         (noteChange)="updateNote($event)"
         (noteDelete)="deleteNote($event)"
       ></app-note-card>
@@ -31,7 +31,7 @@
       type="button"
       color="primary"
       mat-flat-button
-      (click)="navigateToNewNotePage()"
+      (click)="navigateToNewNote()"
     >
       <mat-icon>add</mat-icon>
     </button>

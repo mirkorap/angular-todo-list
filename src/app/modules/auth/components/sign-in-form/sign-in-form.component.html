@@ -5,9 +5,9 @@
 
   <mat-card-content fxFill>
     <form
-      [formGroup]="authForm"
+      [formGroup]="signInForm.asFormGroup"
       [appLoading]="isSubmitting"
-      (keyup.enter)="emitSignInEvent()"
+      (keyup.enter)="signInForm.signIn()"
     >
       <mat-form-field appearance="outline" fxFill>
         <mat-label>Email address</mat-label>
@@ -30,7 +30,7 @@
         color="primary"
         mat-raised-button
         fxFlex
-        (click)="emitSignInEvent()"
+        (click)="signInForm.signIn()"
       >
         {{ 'Sign in' | uppercase }}
       </button>
@@ -40,7 +40,7 @@
         color="warn"
         mat-raised-button
         fxFlex
-        (click)="emitRegisterEvent()"
+        (click)="signInForm.register()"
       >
         {{ 'Register' | uppercase }}
       </button>
@@ -51,7 +51,7 @@
         type="button"
         mat-raised-button
         fxFlex
-        (click)="emitSignInWithGoogleEvent()"
+        (click)="signInForm.signInWithGoogle()"
       >
         {{ 'Sign in with Google' | uppercase }}
       </button>

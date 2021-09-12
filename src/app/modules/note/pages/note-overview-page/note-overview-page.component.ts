@@ -25,7 +25,7 @@ export class NoteOverviewPageComponent {
     return note.isUncompleted();
   }
 
-  navigateToEditNotePage(note: Note): void {
+  navigateToEditNote(note: Note): void {
     const options: RouteNavigatorParams<{ id: string }> = {
       params: { id: note.id.value }
     };
@@ -42,7 +42,7 @@ export class NoteOverviewPageComponent {
     confirmed && this.noteStoreFacade.deleteNote(note);
   }
 
-  navigateToNewNotePage(): void {
+  navigateToNewNote(): void {
     this.routeNavigator.navigateToNewNote();
   }
 }

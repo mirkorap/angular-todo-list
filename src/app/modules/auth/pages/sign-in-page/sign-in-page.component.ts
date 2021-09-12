@@ -1,39 +1,72 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthStoreFacadeService } from '@auth/services';
-import { ICredentialsDto } from '@auth/data-transfer-objects/credentials';
 import { RouteNavigatorService } from '@app/services';
+import { SignInForm } from '@auth/forms/sign-in.form';
+import { SignInFormFactory } from '@auth/factories/sign-in-form.factory';
+import { Subscription } from 'rxjs';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { filter } from 'rxjs/operators';
 
-@UntilDestroy()
+@UntilDestroy({ arrayName: 'subscriptions' })
 @Component({
   selector: 'app-sign-in-page',
   templateUrl: './sign-in-page.component.html',
   styleUrls: ['./sign-in-page.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    SignInFormFactory,
+    {
+      provide: SignInForm,
+      useFactory: (factory: SignInFormFactory) => factory.create(),
+      deps: [SignInFormFactory]
+    }
+  ]
 })
 export class SignInPageComponent implements OnInit {
+  private subscriptions = new Subscription();
+
   constructor(
     public authStoreFacade: AuthStoreFacadeService,
+    private signInForm: SignInForm,
     private routeNavigator: RouteNavigatorService
   ) {}
 
   ngOnInit(): void {
-    this.authStoreFacade.isSignedIn$
-      .pipe(untilDestroyed(this))
-      .subscribe((isSignedIn) => {
-        return isSignedIn && this.routeNavigator.navigateToNoteOverview();
-      });
+    this.redirectSignedInUser();
+    this.signInWithEmailAndPassword();
+    this.registerWithEmailAndPassword();
+    this.signInWithGoogle();
   }
 
-  signInWithEmailAndPassword(credentials: ICredentialsDto): void {
-    this.authStoreFacade.signInWithEmailAndPassword(credentials);
+  private redirectSignedInUser(): void {
+    const sub = this.authStoreFacade.isSignedIn$
+      .pipe(filter((isSignedIn) => isSignedIn))
+      .subscribe(() => this.routeNavigator.navigateToNoteOverview());
+
+    this.subscriptions.add(sub);
   }
 
-  registerWithEmailAndPassword(credentials: ICredentialsDto): void {
-    this.authStoreFacade.registerWithEmailAndPassword(credentials);
+  private signInWithEmailAndPassword(): void {
+    const sub = this.signInForm.signInClick$.subscribe((credentials) => {
+      this.authStoreFacade.signInWithEmailAndPassword(credentials);
+    });
+
+    this.subscriptions.add(sub);
   }
 
-  signInWithGoogle(): void {
-    this.authStoreFacade.signInWithGoogle();
+  private registerWithEmailAndPassword(): void {
+    const sub = this.signInForm.registerClick$.subscribe((credentials) => {
+      this.authStoreFacade.registerWithEmailAndPassword(credentials);
+    });
+
+    this.subscriptions.add(sub);
+  }
+
+  private signInWithGoogle(): void {
+    const sub = this.signInForm.signInWithGoogleClick$.subscribe(() => {
+      this.authStoreFacade.signInWithGoogle();
+    });
+
+    this.subscriptions.add(sub);
   }
 }
